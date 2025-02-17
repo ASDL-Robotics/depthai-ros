@@ -122,9 +122,9 @@ void TFPublisher::publishImuTransform(nlohmann::json json, ::ros::NodeHandle nod
     geometry_msgs::TransformStamped ts;
     ts.header.stamp = ::ros::Time::now();
     auto imuExtr = json["imuExtrinsics"];
+    ts.child_frame_id = baseFrame + std::string("_imu_frame");
     if(imuExtr["toCameraSocket"] != -1) {
         ts.header.frame_id = baseFrame + std::string("_") + getCamSocketName(imuExtr["toCameraSocket"].get<int>()) + std::string("_camera_frame");
-        ts.child_frame_id = baseFrame + std::string("_imu_frame");
         auto extrMat = calHandler.getImuToCameraExtrinsics(static_cast<dai::CameraBoardSocket>(imuExtr["toCameraSocket"].get<int>()));
         // pass parts of 4x4 matrix to transfFromExtr
         std::vector<float> translation = {extrMat[0][3], extrMat[1][3], extrMat[2][3]};
