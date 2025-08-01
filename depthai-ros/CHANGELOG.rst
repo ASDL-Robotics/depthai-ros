@@ -2,7 +2,7 @@
 Changelog for package depthai-ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-3.0.1 (2025-08-01)
+3.0.2 (2025-08-01)
 ------------------
 * Add deprecated camera.launch.py
 * Minor fixes in CI
