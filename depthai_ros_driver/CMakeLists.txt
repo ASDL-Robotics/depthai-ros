@@ -157,7 +157,7 @@ PUBLIC
   ${SENSOR_LIB_NAME}
   ${NN_LIB_NAME}
   ${COMMON_LIB_NAME})
-rclcpp_components_register_nodes(${PROJECT_NAME} "${PROJECT_NAME}::Driver")
+rclcpp_components_register_nodes(${PROJECT_NAME} PLUGIN "${PROJECT_NAME}::Driver" EXECUTABLE driver)
 pluginlib_export_plugin_description_file(${PROJECT_NAME} plugins.xml)
 ament_export_include_directories(include)
 
@@ -190,5 +190,19 @@ install(
     DIRECTORY include/
     DESTINATION include
 )
-
+if(BUILD_TESTING)
+  # Integration tests
+  find_package(ament_cmake_ros REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
+  function(add_ros_isolated_launch_test path)
+    set(RUNNER "${ament_cmake_ros_DIR}/run_test_isolated.py")
+    add_launch_test("${path}" RUNNER "${RUNNER}" ${ARGN})
+  endfunction()
+  add_ros_isolated_launch_test(test/test_driver.py)
+  add_ros_isolated_launch_test(test/test_rgbd_pcl.py)
+  add_ros_isolated_launch_test(test/test_segmentation.py)
+  add_ros_isolated_launch_test(test/test_detections.py)
+  add_ros_isolated_launch_test(test/test_spatial_detections.py)
+  add_ros_isolated_launch_test(test/test_rs_compat.py)
+endif()
 ament_package()

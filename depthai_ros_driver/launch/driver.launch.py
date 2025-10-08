@@ -12,6 +12,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
+from launch.events import Shutdown
 
 
 def is_launch_config_true(context, name):
@@ -118,8 +119,12 @@ def launch_setup(context, *args, **kwargs):
                 "i_width": int(depth_profile[0]),
                 "i_height": int(depth_profile[1]),
                 "i_fps": float(depth_profile[2]),
-                "i_left_rect_publish_topic": is_launch_config_true(context, "enable_infra1"),
-                "i_right_rect_publish_topic": is_launch_config_true(context, "enable_infra2"),
+                "i_left_rect_publish_topic": is_launch_config_true(
+                    context, "enable_infra1"
+                ),
+                "i_right_rect_publish_topic": is_launch_config_true(
+                    context, "enable_infra2"
+                ),
             },
             "infra1": {
                 "i_width": int(infra_profile[0]),
@@ -157,7 +162,7 @@ def launch_setup(context, *args, **kwargs):
             }
         }
     if pointcloud_enable.perform(context) == "true":
-        params["pipeline_gen"] = {"i_enable_rgbd" : True}
+        params["pipeline_gen"] = {"i_enable_rgbd": True}
 
     launch_prefix = setup_launch_prefix(context)
 
@@ -207,11 +212,7 @@ def launch_setup(context, *args, **kwargs):
                         params,
                         parameter_overrides,
                     ],
-                    remappings=[
-                        (
-                            f"{name}/rgbd/points", points_topic_name
-                        )
-                    ]
+                    remappings=[(f"{name}/rgbd/points", points_topic_name)],
                 )
             ],
             arguments=["--ros-args", "--log-level", log_level],
@@ -268,7 +269,6 @@ def generate_launch_description():
             default_value="false",
             description="Enables compatibility with RealSense nodes.",
         ),
-        DeclareLaunchArgument("rectify_rgb", default_value="true"),
         DeclareLaunchArgument("pointcloud.enable", default_value="false"),
         DeclareLaunchArgument("enable_color", default_value="true"),
         DeclareLaunchArgument("enable_depth", default_value="true"),

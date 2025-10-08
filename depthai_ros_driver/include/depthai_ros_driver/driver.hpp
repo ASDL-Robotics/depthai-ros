@@ -22,7 +22,7 @@ namespace depthai_ros_driver {
 using Trigger = std_srvs::srv::Trigger;
 class Driver : public rclcpp::Node {
    public:
-    explicit Driver(const rclcpp::NodeOptions& options = rclcpp::NodeOptions());
+    explicit Driver(const rclcpp::NodeOptions& options);
     /**
      * @brief Creates the pipeline and starts the device. Also sets up parameter callback and services.
      */
