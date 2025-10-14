@@ -109,6 +109,8 @@ jobs:
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
             BUILD_SEQUENTIAL=1
+          platforms: |
+            amd64
           no-cache: true
 
       - name: Build and Push
@@ -164,8 +166,10 @@ jobs:
           build-args: |
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
+          platforms: |
+            arm64
           push: ${{ env.PUSH }}
           no-cache: true
           tags: | 
-            luxonis/depthai-ros-arm:${{ steps.vars.outputs.short_ref }}
-            luxonis/depthai-ros-arm:${{ env.ROS_DISTRO }}-latest
+            luxonis/depthai-ros:${{ steps.vars.outputs.short_ref }}
+            luxonis/depthai-ros:${{ env.ROS_DISTRO }}-latest
