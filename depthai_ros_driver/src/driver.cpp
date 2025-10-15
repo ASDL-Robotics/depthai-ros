@@ -14,6 +14,19 @@ Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", opti
     //  Since we cannot use shared_from this before the object is initialized, we need to use a timer to start the device.
     startTimer = this->create_wall_timer(std::chrono::seconds(1), [this]() {
         start();
+    srvGroup = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+
+    paramCBHandle = this->add_on_set_parameters_callback(std::bind(&Driver::parameterCB, this, std::placeholders::_1));
+    startSrv = this->create_service<Trigger>(
+        "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+    stopSrv = this->create_service<Trigger>(
+        "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+    savePipelineSrv = this->create_service<Trigger>(
+        "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+    saveCalibSrv = this->create_service<Trigger>(
+        "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+
+    diagSub = this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
         startTimer->cancel();
     });
     rclcpp::on_shutdown([this]() { stop(); });
@@ -25,7 +38,6 @@ void Driver::onConfigure() {
     createPipeline();
     setupQueues();
     setIR();
-    paramCBHandle = this->add_on_set_parameters_callback(std::bind(&Driver::parameterCB, this, std::placeholders::_1));
     // If model name not set get one from the device
     std::string camModel = ph->getParam<std::string>("i_tf_device_model");
     if(camModel.empty()) {
@@ -51,18 +63,6 @@ void Driver::onConfigure() {
                                                               ph->getParam<std::string>("i_tf_custom_xacro_args"),
                                                               ph->getParam<bool>("i_rs_compat"));
     }
-    srvGroup = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
-
-    startSrv = this->create_service<Trigger>(
-        "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-    stopSrv = this->create_service<Trigger>(
-        "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-    savePipelineSrv = this->create_service<Trigger>(
-        "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-    saveCalibSrv = this->create_service<Trigger>(
-        "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-
-    diagSub = this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
     pipeline->start();
     RCLCPP_WARN(get_logger(),
                 "If you detect any issues with Kilted release, please report "
@@ -100,9 +100,10 @@ void Driver::stop() {
         for(const auto& node : daiNodes) {
             node->closeQueues();
         }
+        ph.reset();
         daiNodes.clear();
         device.reset();
-        pipeline.reset();
+        pipeline->stop();
         camRunning = false;
         if(rclcpp::ok()) {
             RCLCPP_INFO(get_logger(), "Driver stopped!");
