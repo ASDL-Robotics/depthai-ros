@@ -2,6 +2,14 @@
 Changelog for package depthai-ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.9 (2025-10-15)
+------------------
+* Fix backward_ros dependency
+
+3.0.8 (2025-10-14)
+------------------
+* Fix nav_msgs dependency
+
 3.0.7 (2025-10-07)
 ------------------
 * Disabled VSLAM until deb generation issues for depthai-core are resolved
