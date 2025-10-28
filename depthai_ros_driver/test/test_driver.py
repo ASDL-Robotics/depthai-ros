@@ -231,3 +231,8 @@ class TestDriverLaunch(unittest.TestCase):
         self.assertAlmostEqual(future.result().values[0].double_value, 0.4)
         self.node.destroy_client(srv)
 
+
+@launch_testing.post_shutdown_test()
+class TestShutdown(unittest.TestCase):
+    def test_exit_codes(self, proc_info):
+        launch_testing.asserts.assertExitCodes(proc_info)

@@ -132,7 +132,10 @@ ImagePublisher::~ImagePublisher() {
 };
 
 void ImagePublisher::closeQueue() {
-    if(dataQ) dataQ->close();
+    if(dataQ) {
+        dataQ->removeCallback(cbID);
+        dataQ->close();
+    }
 }
 void ImagePublisher::link(dai::Node::Input& in) {
     out->link(in);

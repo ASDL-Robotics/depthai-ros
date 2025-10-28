@@ -157,4 +157,7 @@ class TestDriverLaunch(unittest.TestCase):
             self.assertGreater(len(imu_received), 30)
         finally:
             self.node.destroy_subscription(sub)
-
+@launch_testing.post_shutdown_test()
+class TestShutdown(unittest.TestCase):
+    def test_exit_codes(self, proc_info):
+        launch_testing.asserts.assertExitCodes(proc_info)

@@ -57,18 +57,18 @@ void Imu::setupQueues(std::shared_ptr<dai::Device> /* device */) {
     switch(msgType) {
         case param_handlers::imu::ImuMsgType::IMU: {
             rosImuPub = getROSNode()->create_publisher<sensor_msgs::msg::Imu>("~/" + getName() + topicSuffix, 10, options);
-            imuQ->addCallback(std::bind(&Imu::imuRosQCB, this, std::placeholders::_1, std::placeholders::_2));
+            cbID = imuQ->addCallback(std::bind(&Imu::imuRosQCB, this, std::placeholders::_1, std::placeholders::_2));
             break;
         }
         case param_handlers::imu::ImuMsgType::IMU_WITH_MAG: {
             daiImuPub = getROSNode()->create_publisher<depthai_ros_msgs::msg::ImuWithMagneticField>("~/" + getName() + topicSuffix, 10, options);
-            imuQ->addCallback(std::bind(&Imu::imuDaiRosQCB, this, std::placeholders::_1, std::placeholders::_2));
+            cbID = imuQ->addCallback(std::bind(&Imu::imuDaiRosQCB, this, std::placeholders::_1, std::placeholders::_2));
             break;
         }
         case param_handlers::imu::ImuMsgType::IMU_WITH_MAG_SPLIT: {
             rosImuPub = getROSNode()->create_publisher<sensor_msgs::msg::Imu>("~/" + getName() + topicSuffix, 10, options);
             magPub = getROSNode()->create_publisher<sensor_msgs::msg::MagneticField>("~/" + getName() + "/mag", 10, options);
-            imuQ->addCallback(std::bind(&Imu::imuMagQCB, this, std::placeholders::_1, std::placeholders::_2));
+            cbID = imuQ->addCallback(std::bind(&Imu::imuMagQCB, this, std::placeholders::_1, std::placeholders::_2));
             break;
         }
         default: {
@@ -78,6 +78,7 @@ void Imu::setupQueues(std::shared_ptr<dai::Device> /* device */) {
 }
 
 void Imu::closeQueues() {
+    imuQ->removeCallback(cbID);
     imuQ->close();
 }
 
