@@ -132,7 +132,7 @@ ImagePublisher::~ImagePublisher() {
 };
 
 void ImagePublisher::closeQueue() {
-    if(dataQ) {
+    if(dataQ && !dataQ->isClosed()) {
         dataQ->removeCallback(cbID);
         dataQ->close();
     }

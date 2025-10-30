@@ -29,7 +29,6 @@ namespace pipeline_gen {
 enum class NNType { None, RGB, Spatial };
 class BasePipeline {
    public:
-    ~BasePipeline() = default;
 
     virtual std::vector<std::unique_ptr<dai_nodes::BaseNode>> createPipeline(std::shared_ptr<rclcpp::Node> node,
                                                                              std::shared_ptr<dai::Device> device,

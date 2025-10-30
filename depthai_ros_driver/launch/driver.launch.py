@@ -29,7 +29,7 @@ def setup_launch_prefix(context, *args, **kwargs):
     if use_gdb.perform(context) == "true":
         launch_prefix += "xterm -e gdb -ex run --args"
     if use_valgrind.perform(context) == "true":
-        launch_prefix += "valgrind --tool=callgrind"
+        launch_prefix += "valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --verbose --log-file=memcheck.log"
     if use_perf.perform(context) == "true":
         launch_prefix += (
             "perf record -g --call-graph dwarf --output=perf.out.node_name.data --"

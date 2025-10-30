@@ -25,7 +25,9 @@ Imu::Imu(const std::string& daiNodeName,
     ph->declareParams(imuNode, device->getConnectedIMU());
     RCLCPP_DEBUG(getLogger(), "Node %s created", daiNodeName.c_str());
 }
-Imu::~Imu() = default;
+Imu::~Imu() {
+    closeQueues();
+}
 void Imu::setNames() {
     imuQName = getName() + "_imu";
 }
@@ -78,8 +80,10 @@ void Imu::setupQueues(std::shared_ptr<dai::Device> /* device */) {
 }
 
 void Imu::closeQueues() {
-    imuQ->removeCallback(cbID);
-    imuQ->close();
+    if(imuQ) {
+        imuQ->removeCallback(cbID);
+        imuQ->close();
+    }
 }
 
 void Imu::imuRosQCB(const std::string& /*name*/, const std::shared_ptr<dai::ADatatype>& data) {

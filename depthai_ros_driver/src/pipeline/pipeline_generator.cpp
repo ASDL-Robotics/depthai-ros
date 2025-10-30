@@ -38,11 +38,13 @@ PipelineGenerator::PipelineGenerator() {
                        {"THERMAL", PipelineType::Thermal}};
 }
 
-PipelineGenerator::~PipelineGenerator() = default;
-std::vector<std::unique_ptr<dai_nodes::BaseNode>> PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
-                                                                                    std::shared_ptr<dai::Device> device,
-                                                                                    std::shared_ptr<dai::Pipeline> pipeline,
-                                                                                    bool rsCompat) {
+PipelineGenerator::~PipelineGenerator() {
+    daiNodes.clear();
+}
+void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
+                                       std::shared_ptr<dai::Device> device,
+                                       std::shared_ptr<dai::Pipeline> pipeline,
+                                       bool rsCompat) {
     auto deviceName = device->getDeviceName();
     RCLCPP_INFO(node->get_logger(), "Creating pipeline for device: %s", deviceName.c_str());
     ph = std::make_shared<param_handlers::PipelineGenParamHandler>(node, "pipeline_gen", deviceName, rsCompat);
@@ -51,7 +53,6 @@ std::vector<std::unique_ptr<dai_nodes::BaseNode>> PipelineGenerator::createPipel
     auto nnType = ph->getParam<std::string>("i_nn_type");
     RCLCPP_INFO(node->get_logger(), "Pipeline type: %s", pipelineType.c_str());
     std::string pluginType = pipelineType;
-    std::vector<std::unique_ptr<dai_nodes::BaseNode>> daiNodes;
     // Check if one of the default types.
     try {
         std::string pTypeUpCase = utils::getUpperCaseStr(pipelineType);
@@ -60,10 +61,10 @@ std::vector<std::unique_ptr<dai_nodes::BaseNode>> PipelineGenerator::createPipel
     } catch(std::out_of_range& e) {
         RCLCPP_DEBUG(node->get_logger(), "Pipeline type [%s] not found in base types, trying to load as a plugin.", pipelineType.c_str());
     }
-    pluginlib::ClassLoader<BasePipeline> pipelineLoader("depthai_ros_driver", "depthai_ros_driver::pipeline_gen::BasePipeline");
+     pipelineLoader = std::make_shared< pluginlib::ClassLoader<BasePipeline>>("depthai_ros_driver", "depthai_ros_driver::pipeline_gen::BasePipeline");
 
     try {
-        std::shared_ptr<BasePipeline> pipelinePlugin = pipelineLoader.createSharedInstance(pluginType);
+        pipelinePlugin = pipelineLoader->createUniqueInstance(pluginType);
         daiNodes = pipelinePlugin->createPipeline(node, device, pipeline, ph, deviceName, rsCompat, nnType);
     } catch(pluginlib::PluginlibException& ex) {
         RCLCPP_ERROR(node->get_logger(), "The plugin failed to load for some reason. Error: %s\n", ex.what());
@@ -78,6 +79,7 @@ std::vector<std::unique_ptr<dai_nodes::BaseNode>> PipelineGenerator::createPipel
             RCLCPP_WARN(node->get_logger(), "Diagnostics not yet available on RVC4.");
         }
     }
+    RCLCPP_INFO(node->get_logger(), "Checking if class is still loaded in class loader... %d", pipelineLoader->isClassLoaded(pluginType));
     bool enableSync = false;
     std::unique_ptr<dai_nodes::Sync> sync;
     for(const auto& daiNode : daiNodes) {
@@ -97,8 +99,10 @@ std::vector<std::unique_ptr<dai_nodes::BaseNode>> PipelineGenerator::createPipel
     if(enableSync) {
         daiNodes.push_back(std::move(sync));
     }
+    for(const auto& node : daiNodes) {
+        node->setupQueues(device);
+    }
     RCLCPP_INFO(node->get_logger(), "Finished setting up pipeline.");
-    return daiNodes;
 }
 
 std::string PipelineGenerator::validatePipeline(std::shared_ptr<rclcpp::Node> node, const std::string& typeStr, int sensorNum, const std::string& deviceName) {

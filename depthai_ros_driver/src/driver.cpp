@@ -12,6 +12,7 @@ namespace depthai_ros_driver {
 
 Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", options) {
     //  Since we cannot use shared_from this before the object is initialized, we need to use a timer to start the device.
+    rclcpp::on_shutdown([this]() { stop(); }, options.context());
     startTimer = this->create_wall_timer(std::chrono::seconds(1), [this]() {
         start();
         srvGroup = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
@@ -27,9 +28,9 @@ Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", opti
             "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
 
         diagSub = this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
+        RCLCPP_INFO(get_logger(), "Driver ready!");
         startTimer->cancel();
     });
-    rclcpp::on_shutdown([this]() { stop(); });
 }
 void Driver::onConfigure() {
     ph = std::make_unique<param_handlers::DriverParamHandler>(shared_from_this(), "driver");
@@ -67,7 +68,6 @@ void Driver::onConfigure() {
     RCLCPP_WARN(get_logger(),
                 "If you detect any issues with Kilted release, please report "
                 "issues to GH: https://github.com/luxonis/depthai-ros/issues/719");
-    RCLCPP_INFO(get_logger(), "Driver ready!");
 }
 
 void Driver::diagCB(const diagnostic_msgs::msg::DiagnosticArray::SharedPtr msg) {
@@ -93,23 +93,23 @@ void Driver::start() {
 }
 
 void Driver::stop() {
-    if(rclcpp::ok()) {
-        RCLCPP_INFO(get_logger(), "Stopping driver.");
-    }
+    // if(rclcpp::ok()) {
+    //     RCLCPP_INFO(get_logger(), "Stopping driver.");
+    // }
     if(camRunning) {
-        for(const auto& node : daiNodes) {
-            node->closeQueues();
-        }
-        ph.reset();
-        daiNodes.clear();
-        device.reset();
+    //     for(const auto& node : daiNodes) {
+    //         node->closeQueues();
+    //     }
+    //     ph.reset();
         pipeline->stop();
+    // pipeline.reset();
+    //     // device.reset();
         camRunning = false;
         if(rclcpp::ok()) {
             RCLCPP_INFO(get_logger(), "Driver stopped!");
         }
-    } else {
-        RCLCPP_INFO(get_logger(), "Driver already stopped!");
+    // } else {
+    //     RCLCPP_INFO(get_logger(), "Driver already stopped!");
     }
 }
 
@@ -188,11 +188,11 @@ void Driver::getDeviceType() {
 }
 
 void Driver::createPipeline() {
-    auto generator = std::make_unique<pipeline_gen::PipelineGenerator>();
+    generator = std::make_unique<pipeline_gen::PipelineGenerator>();
     if(!ph->getParam<std::string>("i_external_calibration_path").empty()) {
         loadCalib(ph->getParam<std::string>("i_external_calibration_path"));
     }
-    daiNodes = generator->createPipeline(shared_from_this(), device, pipeline, ph->getParam<bool>("i_rs_compat"));
+    generator->createPipeline(shared_from_this(), device, pipeline, ph->getParam<bool>("i_rs_compat"));
     if(ph->getParam<bool>("i_pipeline_dump")) {
         savePipeline();
     }
@@ -202,9 +202,6 @@ void Driver::createPipeline() {
 }
 
 void Driver::setupQueues() {
-    for(const auto& node : daiNodes) {
-        node->setupQueues(device);
-    }
 }
 
 void Driver::startDevice() {
@@ -311,9 +308,9 @@ rcl_interfaces::msg::SetParametersResult Driver::parameterCB(const std::vector<r
             }
         }
     }
-    for(const auto& node : daiNodes) {
-        node->updateParams(params);
-    }
+    // for(const auto& node : daiNodes) {
+    //     node->updateParams(params);
+    // }
     rcl_interfaces::msg::SetParametersResult res;
     res.successful = true;
     return res;
