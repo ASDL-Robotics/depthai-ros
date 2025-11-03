@@ -5,6 +5,10 @@ on:
   push:
     branches:
       - kilted_testing
+      - kilted
+  pull_request:
+    branches:
+      - kilted
 
 env:
   ROS_DISTRO: kilted
