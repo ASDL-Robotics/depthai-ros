@@ -10,7 +10,7 @@ env:
   ROS_DISTRO: kilted
 
 jobs:
-  run_vanilla_tests:
+  run_tests:
     uses: ./.github/workflows/test_child.yml
     secrets:
       CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
