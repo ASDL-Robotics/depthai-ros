@@ -29,7 +29,7 @@ jobs:
         echo "Using branch: $BRANCH_NAME"
         .ci/hil/build_and_push.sh "$BRANCH_NAME" "$CONTAINER_REGISTRY" "${{ github.sha }}" "$PULL_REQUEST" "$TAG"
 
- linux_rvc2_test:
+ linux_rvc2_usb_test:
     needs: [build_docker_container]
     runs-on: ['self-hosted', 'testbed-runner']
     steps:
@@ -39,5 +39,5 @@ jobs:
       run: |
         source .ci/hil/prepare_hil_framework.sh ${{ secrets.HIL_PAT_TOKEN }}
         export RESERVATION_NAME="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID#rvc2-${{ inputs.flavor }}"
-        exec hil_runner --models 'oak_d or oak_d_pro' --reservation-name $RESERVATION_NAME --wait --docker-image ${{ secrets.CONTAINER_REGISTRY }}/depthai-ros-hil:${{ needs.build_docker_container.outputs.tag }} --commands "cd /ws && colcon test --merge-install --ctest-args tests && colcon test-result --all --verbose"
+        exec hil_runner --models 'oak_d or oak_d_pro' --reservation-name $RESERVATION_NAME --wait --docker-image ${{ secrets.CONTAINER_REGISTRY }}/depthai-ros-hil:${{ needs.build_docker_container.outputs.tag }} --commands "/ws/src/depthai-ros/run_tests.sh"
 
