@@ -17,7 +17,7 @@ merge=0
 tests=0
 build_type=Release
 install_type=symlink-install
-while getopts ":h:s:r:m:" option; do
+while getopts ":h:s:r:m:t:" option; do
    case $option in
       h) # display Help
          Help
