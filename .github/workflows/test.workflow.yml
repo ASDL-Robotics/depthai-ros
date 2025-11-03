@@ -2,6 +2,9 @@
 name: DepthAI ROS Testing
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - kilted_testing
 
 env:
   ROS_DISTRO: kilted
