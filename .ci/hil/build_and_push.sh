@@ -35,7 +35,7 @@ if docker images --format '{{.Repository}}:{{.Tag}}' | grep -q "^${IMAGE_NAME}$"
 else
   # Build the image
     echo "🔨 Building image ${IMAGE_NAME}..."
-    docker build -t "${IMAGE_NAME}" -f ./Dockerfile .
+    docker build -t "${IMAGE_NAME}" -f ./Dockerfile . --build-arg BUILD_TESTS="1"
 fi
 
 # Push the image
