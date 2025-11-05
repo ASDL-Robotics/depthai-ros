@@ -37,6 +37,7 @@ class BasePipeline {
                                                                              const std::string& deviceName,
                                                                              bool rsCompat,
                                                                              const std::string& nnType) = 0;
+    virtual ~BasePipeline() = default;
 
    protected:
     bool checkForImu(std::shared_ptr<param_handlers::PipelineGenParamHandler> ph, std::shared_ptr<dai::Device> device, rclcpp::Logger logger);

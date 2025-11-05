@@ -13,7 +13,8 @@
 
 namespace depthai_ros_driver {
 namespace pipeline_gen {
-PipelineGenerator::PipelineGenerator() {
+PipelineGenerator::PipelineGenerator()
+    : pipelineLoader(std::make_shared<pluginlib::ClassLoader<BasePipeline>>("depthai_ros_driver", "depthai_ros_driver::pipeline_gen::BasePipeline")) {
     pluginTypeMap = {{"RGB", "depthai_ros_driver::pipeline_gen::RGB"},
                      {"RGBD", "depthai_ros_driver::pipeline_gen::RGBD"},
                      {"RGBSTEREO", "depthai_ros_driver::pipeline_gen::RGBStereo"},
@@ -39,7 +40,9 @@ PipelineGenerator::PipelineGenerator() {
 }
 
 PipelineGenerator::~PipelineGenerator() {
+    pipelinePlugin.reset();
     daiNodes.clear();
+    pipelineLoader.reset();
 }
 void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
                                        std::shared_ptr<dai::Device> device,
@@ -61,7 +64,6 @@ void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
     } catch(std::out_of_range& e) {
         RCLCPP_DEBUG(node->get_logger(), "Pipeline type [%s] not found in base types, trying to load as a plugin.", pipelineType.c_str());
     }
-     pipelineLoader = std::make_shared< pluginlib::ClassLoader<BasePipeline>>("depthai_ros_driver", "depthai_ros_driver::pipeline_gen::BasePipeline");
 
     try {
         pipelinePlugin = pipelineLoader->createUniqueInstance(pluginType);
@@ -79,7 +81,6 @@ void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
             RCLCPP_WARN(node->get_logger(), "Diagnostics not yet available on RVC4.");
         }
     }
-    RCLCPP_INFO(node->get_logger(), "Checking if class is still loaded in class loader... %d", pipelineLoader->isClassLoaded(pluginType));
     bool enableSync = false;
     std::unique_ptr<dai_nodes::Sync> sync;
     for(const auto& daiNode : daiNodes) {

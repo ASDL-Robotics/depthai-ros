@@ -60,8 +60,8 @@ class PipelineGenerator {
    private:
     std::shared_ptr<param_handlers::PipelineGenParamHandler> ph;
     std::vector<std::unique_ptr<dai_nodes::BaseNode>> daiNodes;
-    class_loader::ClassLoader::UniquePtr<BasePipeline> pipelinePlugin;
     std::shared_ptr<pluginlib::ClassLoader<BasePipeline>> pipelineLoader;
+    class_loader::ClassLoader::UniquePtr<BasePipeline> pipelinePlugin;
 };
 }  // namespace pipeline_gen
 }  // namespace depthai_ros_driver

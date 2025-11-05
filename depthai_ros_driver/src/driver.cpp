@@ -13,24 +13,29 @@ namespace depthai_ros_driver {
 Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", options) {
     //  Since we cannot use shared_from this before the object is initialized, we need to use a timer to start the device.
     rclcpp::on_shutdown([this]() { stop(); }, options.context());
-    startTimer = this->create_wall_timer(std::chrono::seconds(1), [this]() {
-        start();
-        srvGroup = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
+    // to prevent starting multiple times when not using static executor
+    if(!starting) {
+        startTimer = this->create_wall_timer(std::chrono::seconds(1), [this]() {
+            starting = true;
+            start();
+            srvGroup = this->create_callback_group(rclcpp::CallbackGroupType::Reentrant);
 
-        paramCBHandle = this->add_on_set_parameters_callback(std::bind(&Driver::parameterCB, this, std::placeholders::_1));
-        startSrv = this->create_service<Trigger>(
-            "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-        stopSrv = this->create_service<Trigger>(
-            "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-        savePipelineSrv = this->create_service<Trigger>(
-            "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-        saveCalibSrv = this->create_service<Trigger>(
-            "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            paramCBHandle = this->add_on_set_parameters_callback(std::bind(&Driver::parameterCB, this, std::placeholders::_1));
+            startSrv = this->create_service<Trigger>(
+                "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            stopSrv = this->create_service<Trigger>(
+                "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            savePipelineSrv = this->create_service<Trigger>(
+                "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            saveCalibSrv = this->create_service<Trigger>(
+                "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
 
-        diagSub = this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
-        RCLCPP_INFO(get_logger(), "Driver ready!");
-        startTimer->cancel();
-    });
+            diagSub =
+                this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
+            RCLCPP_INFO(get_logger(), "Driver ready!");
+            startTimer->cancel();
+        });
+    }
 }
 void Driver::onConfigure() {
     ph = std::make_unique<param_handlers::DriverParamHandler>(shared_from_this(), "driver");
@@ -97,19 +102,20 @@ void Driver::stop() {
     //     RCLCPP_INFO(get_logger(), "Stopping driver.");
     // }
     if(camRunning) {
-    //     for(const auto& node : daiNodes) {
-    //         node->closeQueues();
-    //     }
-    //     ph.reset();
+        //     for(const auto& node : daiNodes) {
+        //         node->closeQueues();
+        //     }
+        //     ph.reset();
         pipeline->stop();
-    // pipeline.reset();
-    //     // device.reset();
+        generator.reset();
+        // pipeline.reset();
+        //     // device.reset();
         camRunning = false;
         if(rclcpp::ok()) {
             RCLCPP_INFO(get_logger(), "Driver stopped!");
         }
-    // } else {
-    //     RCLCPP_INFO(get_logger(), "Driver already stopped!");
+        // } else {
+        //     RCLCPP_INFO(get_logger(), "Driver already stopped!");
     }
 }
 
@@ -201,8 +207,7 @@ void Driver::createPipeline() {
     }
 }
 
-void Driver::setupQueues() {
-}
+void Driver::setupQueues() {}
 
 void Driver::startDevice() {
     rclcpp::Rate r(1.0);

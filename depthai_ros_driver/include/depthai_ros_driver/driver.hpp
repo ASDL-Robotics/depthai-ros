@@ -93,6 +93,7 @@ class Driver : public rclcpp::Node {
     std::unique_ptr<pipeline_gen::PipelineGenerator> generator;
     dai::Platform platform;
     std::atomic<bool> camRunning = false;
+    std::atomic<bool> starting = false;
     bool initialized = false;
     std::unique_ptr<depthai_bridge::TFPublisher> tfPub;
     rclcpp::TimerBase::SharedPtr startTimer;
