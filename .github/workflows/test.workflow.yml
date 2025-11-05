@@ -4,57 +4,18 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
-      - humble
-      - galactic
-      - foxy
-      - iron
-      - jazzy
+      - kilted_testing
       - kilted
-    tags:
-      - 'v*'
   pull_request:
     branches:
-      - main
-      - humble
-      - galactic
-      - foxy
-      - iron
-      - jazzy
       - kilted
+
 env:
   ROS_DISTRO: kilted
 
 jobs:
-  docker-build-amd:
-    name: Build and Upload to Docker Hub
-    runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-    env: 
-      PUSH: ${{ (github.event_name != 'pull_request') && (github.repository == 'luxonis/depthai-ros') && startsWith(github.ref, 'refs/tags/v') }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Build
-        uses: docker/build-push-action@v3
-        if: env.PUSH == 'false'
-        with:
-          build-args: |
-            ROS_DISTRO=${{ env.ROS_DISTRO }}
-            USE_RVIZ=1
-            BUILD_SEQUENTIAL=1
-          no-cache: true
-
-      - name: Build and Push
-        uses: docker/build-push-action@v3
-        if: env.PUSH == 'true'
-        with:
-          build-args: |
-            ROS_DISTRO=${{ env.ROS_DISTRO }}
-            USE_RVIZ=1
-          push: ${{ env.PUSH }}
-          no-cache: true
-          tags: | 
-            luxonis/depthai-ros:${{ steps.vars.outputs.short_ref }}
-            luxonis/depthai-ros:${{ env.ROS_DISTRO }}-latest
+  run_tests:
+    uses: ./.github/workflows/test_child.yml
+    secrets:
+      CONTAINER_REGISTRY: ${{ secrets.CONTAINER_REGISTRY }}
+      HIL_PAT_TOKEN: ${{ secrets.HIL_PAT_TOKEN }}
