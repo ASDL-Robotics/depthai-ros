@@ -187,12 +187,12 @@ bool TFPublisher::modelNameAvailable() {
     std::filesystem::path path = std::filesystem::path(ament_index_cpp::get_package_share_directory("depthai_descriptions")) / "urdf" / "models";
     convertModelName();
     try {
-        for (const auto& entry : std::filesystem::directory_iterator(path)) {
-            if (entry.is_regular_file() && entry.path().filename() == camModel + ".stl") {
+        for(const auto& entry : std::filesystem::directory_iterator(path)) {
+            if(entry.is_regular_file() && entry.path().filename() == camModel + ".stl") {
                 return true;
             }
         }
-    } catch (const std::filesystem::filesystem_error& e) {
+    } catch(const std::filesystem::filesystem_error& e) {
         throw std::runtime_error("Could not open depthai_descriptions package directory: " + std::string(e.what()));
     }
     return false;

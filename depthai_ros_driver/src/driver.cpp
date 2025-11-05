@@ -98,24 +98,18 @@ void Driver::start() {
 }
 
 void Driver::stop() {
-    // if(rclcpp::ok()) {
-    //     RCLCPP_INFO(get_logger(), "Stopping driver.");
-    // }
+    if(rclcpp::ok()) {
+        RCLCPP_INFO(get_logger(), "Stopping driver.");
+    }
     if(camRunning) {
-        //     for(const auto& node : daiNodes) {
-        //         node->closeQueues();
-        //     }
-        //     ph.reset();
         pipeline->stop();
         generator.reset();
-        // pipeline.reset();
-        //     // device.reset();
         camRunning = false;
         if(rclcpp::ok()) {
             RCLCPP_INFO(get_logger(), "Driver stopped!");
         }
-        // } else {
-        //     RCLCPP_INFO(get_logger(), "Driver already stopped!");
+    } else {
+        RCLCPP_INFO(get_logger(), "Driver already stopped!");
     }
 }
 

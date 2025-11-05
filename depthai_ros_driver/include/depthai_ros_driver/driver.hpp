@@ -94,7 +94,6 @@ class Driver : public rclcpp::Node {
     dai::Platform platform;
     std::atomic<bool> camRunning = false;
     std::atomic<bool> starting = false;
-    bool initialized = false;
     std::unique_ptr<depthai_bridge::TFPublisher> tfPub;
     rclcpp::TimerBase::SharedPtr startTimer;
     rclcpp::CallbackGroup::SharedPtr srvGroup;
