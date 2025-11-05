@@ -109,7 +109,9 @@ void Driver::stop() {
             RCLCPP_INFO(get_logger(), "Driver stopped!");
         }
     } else {
-        RCLCPP_INFO(get_logger(), "Driver already stopped!");
+        if(rclcpp::ok()) {
+            RCLCPP_INFO(get_logger(), "Driver already stopped!");
+        }
     }
 }
 
@@ -307,9 +309,7 @@ rcl_interfaces::msg::SetParametersResult Driver::parameterCB(const std::vector<r
             }
         }
     }
-    // for(const auto& node : daiNodes) {
-    //     node->updateParams(params);
-    // }
+    generator->updateParams(params);
     rcl_interfaces::msg::SetParametersResult res;
     res.successful = true;
     return res;

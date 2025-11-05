@@ -39,11 +39,7 @@ PipelineGenerator::PipelineGenerator()
                        {"THERMAL", PipelineType::Thermal}};
 }
 
-PipelineGenerator::~PipelineGenerator() {
-    pipelinePlugin.reset();
-    daiNodes.clear();
-    pipelineLoader.reset();
-}
+PipelineGenerator::~PipelineGenerator() = default;
 void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
                                        std::shared_ptr<dai::Device> device,
                                        std::shared_ptr<dai::Pipeline> pipeline,
@@ -66,8 +62,11 @@ void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
     }
 
     try {
-        pipelinePlugin = pipelineLoader->createUniqueInstance(pluginType);
+        // other types of instancing (shared/unique ptr) seem to cause memory issues when shutting down the driver
+        auto pipelinePlugin = pipelineLoader->createUnmanagedInstance(pluginType);
         daiNodes = pipelinePlugin->createPipeline(node, device, pipeline, ph, deviceName, rsCompat, nnType);
+        pipelineLoader->unloadLibraryForClass(pluginType);
+        delete pipelinePlugin;
     } catch(pluginlib::PluginlibException& ex) {
         RCLCPP_ERROR(node->get_logger(), "The plugin failed to load for some reason. Error: %s\n", ex.what());
         throw std::runtime_error("Plugin loading failed.");
@@ -106,6 +105,11 @@ void PipelineGenerator::createPipeline(std::shared_ptr<rclcpp::Node> node,
     RCLCPP_INFO(node->get_logger(), "Finished setting up pipeline.");
 }
 
+void PipelineGenerator::updateParams(const std::vector<rclcpp::Parameter>& params) {
+    for(const auto& node : daiNodes) {
+        node->updateParams(params);
+    }
+}
 std::string PipelineGenerator::validatePipeline(std::shared_ptr<rclcpp::Node> node, const std::string& typeStr, int sensorNum, const std::string& deviceName) {
     auto pType = utils::getValFromMap(typeStr, pipelineTypeMap);
     if(deviceName == "OAK-D-SR-POE") {

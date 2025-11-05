@@ -50,7 +50,7 @@ build_testing_flag="-DBUILD_TESTING=OFF"
 test_ros_driver_flag="-DTEST_DEPTHAI_ROS_DRIVER=OFF"
 if [ "$tests" == 1 ]; then
   build_testing_flag="-DBUILD_TESTING=ON"
-  test_ros_driver_flag="-DTEST_DEPTHAI_ROS_DRIVER=OFF"
+  test_ros_driver_flag="-DTEST_DEPTHAI_ROS_DRIVER=ON"
 fi
 
 

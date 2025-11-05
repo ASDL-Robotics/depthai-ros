@@ -53,15 +53,16 @@ class PipelineGenerator {
      */
     void createPipeline(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<dai::Device> device, std::shared_ptr<dai::Pipeline> pipeline, bool rsCompat);
 
+    void updateParams(const std::vector<rclcpp::Parameter>& params);
+
    protected:
     std::unordered_map<std::string, std::string> pluginTypeMap;
     std::unordered_map<std::string, PipelineType> pipelineTypeMap;
 
    private:
     std::shared_ptr<param_handlers::PipelineGenParamHandler> ph;
-    std::vector<std::unique_ptr<dai_nodes::BaseNode>> daiNodes;
     std::shared_ptr<pluginlib::ClassLoader<BasePipeline>> pipelineLoader;
-    class_loader::ClassLoader::UniquePtr<BasePipeline> pipelinePlugin;
+    std::vector<std::unique_ptr<dai_nodes::BaseNode>> daiNodes;
 };
 }  // namespace pipeline_gen
 }  // namespace depthai_ros_driver
