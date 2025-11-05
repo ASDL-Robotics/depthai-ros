@@ -190,7 +190,7 @@ install(
     DIRECTORY include/
     DESTINATION include
 )
-if(BUILD_TESTING)
+if(BUILD_TESTING AND TEST_DEPTHAI_ROS_DRIVER)
   # Integration tests
   find_package(ament_cmake_ros REQUIRED)
   find_package(launch_testing_ament_cmake REQUIRED)
