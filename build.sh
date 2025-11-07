@@ -72,5 +72,5 @@ else
     colcon build \
     --$install_type \
     --cmake-args -DCMAKE_BUILD_TYPE=$build_type \
-    --cmake-args $build_testing_flag --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON --cmake-args -DBUILD_SHARED_LIBS=ON
+    --cmake-args $build_testing_flag --cmake-args $test_ros_driver_flag --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON --cmake-args -DBUILD_SHARED_LIBS=ON
 fi
