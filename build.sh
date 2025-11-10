@@ -72,9 +72,9 @@ else
     colcon build \
     --$install_type \
     --cmake-args -DCMAKE_BUILD_TYPE=$build_type \
-    --cmake-args -DBUILD_TESTING=$build_testing_flag \
-    --cmake-args -DTEST_DEPTHAI_ROS_DRIVER=$test_ros_driver_flag \
-    --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-    --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-    --cmake-args -DBUILD_SHARED_LIBS=ON
+     -DBUILD_TESTING=$build_testing_flag \
+     -DTEST_DEPTHAI_ROS_DRIVER=$test_ros_driver_flag \
+     -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+     -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+     -DBUILD_SHARED_LIBS=ON
 fi
