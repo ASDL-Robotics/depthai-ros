@@ -46,15 +46,15 @@ then
     install_type="merge-install"
 fi
 
-build_testing_flag="-DBUILD_TESTING=OFF"
-test_ros_driver_flag="-DTEST_DEPTHAI_ROS_DRIVER=OFF"
+build_testing_flag="OFF"
+test_ros_driver_flag="OFF"
 if [ "$tests" == 1 ]; then
-  build_testing_flag="-DBUILD_TESTING=ON"
-  test_ros_driver_flag="-DTEST_DEPTHAI_ROS_DRIVER=ON"
+  test_ros_driver_flag="ON"
+  build_testing_flag="ON"
 fi
 
 
-echo "Build type: $build_type, Install_type: $install_type"
+echo "Build type: $build_type, Install_type: $install_type, Testing: $tests"
 if [ "$sequential" == 1 ]
 then
     echo "Sequential build" && \
@@ -62,15 +62,19 @@ then
         --$install_type \
         --executor sequential \
         --cmake-args -DCMAKE_BUILD_TYPE=$build_type \
-        --cmake-args $build_testing_flag \
-        --cmake-args $test_ros_driver_flag \
-        --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
-        --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-        --cmake-args -DBUILD_SHARED_LIBS=ON
+         -DBUILD_TESTING=$build_testing_flag \
+         -DTEST_DEPTHAI_ROS_DRIVER=$test_ros_driver_flag \
+         -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+         -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+         -DBUILD_SHARED_LIBS=ON
 else
     echo "Parallel build" && \
     colcon build \
     --$install_type \
     --cmake-args -DCMAKE_BUILD_TYPE=$build_type \
-    --cmake-args $build_testing_flag --cmake-args $test_ros_driver_flag --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON --cmake-args -DBUILD_SHARED_LIBS=ON
+    --cmake-args -DBUILD_TESTING=$build_testing_flag \
+    --cmake-args -DTEST_DEPTHAI_ROS_DRIVER=$test_ros_driver_flag \
+    --cmake-args -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+    --cmake-args -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    --cmake-args -DBUILD_SHARED_LIBS=ON
 fi
