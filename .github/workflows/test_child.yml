@@ -39,5 +39,16 @@ jobs:
       run: |
         source .ci/hil/prepare_hil_framework.sh ${{ secrets.HIL_PAT_TOKEN }}
         export RESERVATION_NAME="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID#rvc2-${{ inputs.flavor }}"
-        exec hil_runner --models 'oak_d or oak_d_pro' --reservation-name $RESERVATION_NAME --wait --docker-image ${{ secrets.CONTAINER_REGISTRY }}/depthai-ros-hil:${{ needs.build_docker_container.outputs.tag }} --commands "/ws/src/depthai-ros/.ci/hil/run_hil_tests.sh"
+        exec hil_runner --models 'oak_d or oak_d_pro' --reservation-name $RESERVATION_NAME --wait --docker-image ${{ secrets.CONTAINER_REGISTRY }}/depthai-ros-hil:${{ needs.build_docker_container.outputs.tag }} --commands "/ws/src/depthai-ros/.ci/hil/run_hil_tests.sh rvc2 usb"
 
+ linux_rvc4_test:
+    needs: [build_docker_container]
+    runs-on: ['self-hosted', 'testbed-runner']
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Run RVC4 tests
+      run: |
+        source .ci/hil/prepare_hil_framework.sh ${{ secrets.HIL_PAT_TOKEN }}
+        export RESERVATION_NAME="https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID#rvc4"
+        exec hil_runner --models 'oak4_d or oak4_pro' --reservation-name $RESERVATION_NAME --wait --docker-image ${{ secrets.CONTAINER_REGISTRY }}/depthai-ros-hil:${{ needs.build_docker_container.outputs.tag }} --commands "/ws/src/depthai-ros/.ci/hil/run_hil_tests.sh rvc4 tcpip"

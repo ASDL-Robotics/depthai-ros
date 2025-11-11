@@ -1,8 +1,11 @@
 #!/bin/bash
 set -e 
 
-export DEPTHAI_PLATFORM="rvc2"
-export DEPTHAI_PROTOCOL="usb"
+platform = $1
+protocol = $2
+
+export DEPTHAI_PLATFORM=$platform
+export DEPTHAI_PROTOCOL=$protocol
 
 echo "Running colcon tests in /ws"
 echo "DEPTHAI_PLATFORM=$DEPTHAI_PLATFORM"
