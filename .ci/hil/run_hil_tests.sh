@@ -1,11 +1,8 @@
 #!/bin/bash
 set -e 
 
-platform = $1
-protocol = $2
-
-export DEPTHAI_PLATFORM=$platform
-export DEPTHAI_PROTOCOL=$protocol
+export DEPTHAI_PLATFORM=$1
+export DEPTHAI_PROTOCOL=$2
 
 echo "Running colcon tests in /ws"
 echo "DEPTHAI_PLATFORM=$DEPTHAI_PLATFORM"
