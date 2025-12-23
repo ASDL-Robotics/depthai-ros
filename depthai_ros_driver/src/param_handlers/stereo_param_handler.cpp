@@ -1,7 +1,9 @@
 #include "depthai_ros_driver/param_handlers/stereo_param_handler.hpp"
 
 #include "depthai/common/CameraFeatures.hpp"
+#include "depthai/common/DeviceModelZoo.hpp"
 #include "depthai/pipeline/datatype/StereoDepthConfig.hpp"
+#include "depthai/pipeline/node/NeuralDepth.hpp"
 #include "depthai/pipeline/node/StereoDepth.hpp"
 #include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
 #include "depthai_ros_driver/utils.hpp"
@@ -38,26 +40,16 @@ StereoParamHandler::StereoParamHandler(std::shared_ptr<rclcpp::Node> node, const
         {"VALID_1_IN_LAST_8", dai::StereoDepthConfig::PostProcessing::TemporalFilter::PersistencyMode::VALID_1_IN_LAST_8},
         {"PERSISTENCY_INDEFINITELY", dai::StereoDepthConfig::PostProcessing::TemporalFilter::PersistencyMode::PERSISTENCY_INDEFINITELY},
     };
-}
-
-StereoParamHandler::~StereoParamHandler() = default;
-
-void StereoParamHandler::updateSocketsFromParams(dai::CameraBoardSocket& left, dai::CameraBoardSocket& right, dai::CameraBoardSocket& align) {
-    int newLeftS = declareAndLogParam<int>("i_left_socket_id", static_cast<int>(left));
-    int newRightS = declareAndLogParam<int>("i_right_socket_id", static_cast<int>(right));
-    alignSocket = static_cast<dai::CameraBoardSocket>(declareAndLogParam<int>("i_board_socket_id", static_cast<int>(align)));
-    if(newLeftS != static_cast<int>(left) || newRightS != static_cast<int>(right)) {
-        RCLCPP_WARN(getROSNode()->get_logger(), "Left or right socket changed, updating stereo node");
-        RCLCPP_WARN(getROSNode()->get_logger(), "Old left socket: %d, new left socket: %d", static_cast<int>(left), newLeftS);
-        RCLCPP_WARN(getROSNode()->get_logger(), "Old right socket: %d, new right socket: %d", static_cast<int>(right), newRightS);
-    }
-    left = static_cast<dai::CameraBoardSocket>(newLeftS);
-    right = static_cast<dai::CameraBoardSocket>(newRightS);
-}
-
-void StereoParamHandler::declareParams(std::shared_ptr<dai::node::StereoDepth> stereo) {
-    declareAndLogParam<int>(ParamNames::MAX_Q_SIZE, 30);
-    bool lowBandwidth = declareAndLogParam<bool>(ParamNames::LOW_BANDWIDTH, false);
+    neuralModelTypeMap = {{"NEURAL_DEPTH_LARGE", dai::DeviceModelZoo::NEURAL_DEPTH_LARGE},
+                          {"NEURAL_DEPTH_MEDIUM", dai::DeviceModelZoo::NEURAL_DEPTH_MEDIUM},
+                          {"NEURAL_DEPTH_SMALL", dai::DeviceModelZoo::NEURAL_DEPTH_SMALL},
+                          {"NEURAL_DEPTH_NANO", dai::DeviceModelZoo::NEURAL_DEPTH_NANO}};
+    stereoTypeMap = {
+        {"STEREO", StereoType::Stereo},
+        {"NEURAL_DEPTH", StereoType::NeuralDepth},
+        {"STERO_AND_NEURAL_DEPTH", StereoType::StereoAndNeuralDepth}
+    };
+    declareAndLogParam<bool>("i_use_neural_depth", false);
     declareAndLogParam<int>(ParamNames::LOW_BANDWIDTH_QUALITY, 50);
     declareAndLogParam<int>(ParamNames::LOW_BANDWIDTH_PROFILE, 4);
     declareAndLogParam<int>(ParamNames::LOW_BANDWIDTH_FRAME_FREQ, 30);
@@ -108,6 +100,26 @@ void StereoParamHandler::declareParams(std::shared_ptr<dai::node::StereoDepth> s
     declareAndLogParam<bool>(ParamNames::SYNCED, false);
     declareAndLogParam<bool>("i_run_align_on_host", true);
     declareAndLogParam<bool>(ParamNames::ALIGNED, true);
+    declareAndLogParam<bool>(ParamNames::LOW_BANDWIDTH, false);
+}
+
+StereoParamHandler::~StereoParamHandler() = default;
+
+void StereoParamHandler::updateSocketsFromParams(dai::CameraBoardSocket& left, dai::CameraBoardSocket& right, dai::CameraBoardSocket& align) {
+    int newLeftS = declareAndLogParam<int>("i_left_socket_id", static_cast<int>(left));
+    int newRightS = declareAndLogParam<int>("i_right_socket_id", static_cast<int>(right));
+    alignSocket = static_cast<dai::CameraBoardSocket>(declareAndLogParam<int>("i_board_socket_id", static_cast<int>(align)));
+    if(newLeftS != static_cast<int>(left) || newRightS != static_cast<int>(right)) {
+        RCLCPP_WARN(getROSNode()->get_logger(), "Left or right socket changed, updating stereo node");
+        RCLCPP_WARN(getROSNode()->get_logger(), "Old left socket: %d, new left socket: %d", static_cast<int>(left), newLeftS);
+        RCLCPP_WARN(getROSNode()->get_logger(), "Old right socket: %d, new right socket: %d", static_cast<int>(right), newRightS);
+    }
+    left = static_cast<dai::CameraBoardSocket>(newLeftS);
+    right = static_cast<dai::CameraBoardSocket>(newRightS);
+}
+
+void StereoParamHandler::declareParams(std::shared_ptr<dai::node::StereoDepth> stereo) {
+bool lowBandwidth = getParam<bool>(ParamNames::LOW_BANDWIDTH);
 
     stereo->setLeftRightCheck(declareAndLogParam<bool>("i_lr_check", true));
     int width = 640;
@@ -200,5 +212,36 @@ void StereoParamHandler::declareParams(std::shared_ptr<dai::node::StereoDepth> s
     declareAndLogParam("i_height", height, true);
     stereo->initialConfig = config;
 }
+void StereoParamHandler::declareParams(std::shared_ptr<dai::node::NeuralDepth> neuralDepth) {
+    model = utils::getValFromMap(declareAndLogParam<std::string>("i_neural_depth_model", "NEURAL_DEPTH_LARGE"), neuralModelTypeMap);
+
+    auto currentConfig = neuralDepth->initialConfig;
+    currentConfig->setConfidenceThreshold(declareAndLogParam<int>("r_confidence_threshold", currentConfig->getConfidenceThreshold()));
+    currentConfig->setEdgeThreshold(declareAndLogParam<int>("r_edge_threshold", currentConfig->getEdgeThreshold()));
+    neuralDepth->initialConfig = currentConfig;
+
+    declareAndLogParam<int>(ParamNames::WIDTH, 768);
+    declareAndLogParam<int>(ParamNames::HEIGHT, 480);
+    declareAndLogParam<bool>("i_enable_alpha_scaling", false);
+
+}
+std::shared_ptr<dai::NeuralDepthConfig> StereoParamHandler::setRuntimeParams(const std::vector<rclcpp::Parameter>& params) {
+    auto cfg = std::make_shared<dai::NeuralDepthConfig>();
+    for(const auto& p : params) {
+        if(p.get_name() == getFullParamName("r_confidence_threshold")) {
+            if(p.get_value<int>()) {
+                cfg->setConfidenceThreshold(p.get_value<int>());
+            }
+        }
+        if(p.get_name() == getFullParamName("r_edge_threshold")) {
+            if(p.get_value<int>()) {
+                cfg->setEdgeThreshold(p.get_value<int>());
+            }
+        }
+    }
+    return cfg;
+}
+
+
 }  // namespace param_handlers
 }  // namespace depthai_ros_driver

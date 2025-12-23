@@ -20,6 +20,11 @@ namespace param_handlers {
 
 class PipelineGenParamHandler : public BaseParamHandler {
    public:
+    enum class RGBDType {
+        Stereo,
+        NeuralDepth,
+        StereoAndNeuralDepth,
+    };
     explicit PipelineGenParamHandler(std::shared_ptr<rclcpp::Node> node, const std::string& name, const std::string& deviceName, bool rsCompat);
     ~PipelineGenParamHandler();
     void declareParams();

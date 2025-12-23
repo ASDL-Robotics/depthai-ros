@@ -17,6 +17,7 @@ class ImgFrame;
 namespace node {
 class ImageAlign;
 class StereoDepth;
+class NeuralDepth;
 }  // namespace node
 }  // namespace dai
 
@@ -39,6 +40,14 @@ namespace sensor_helpers {
 class ImagePubliser;
 }
 class RGBD;
+class StereoNodeWrapper {
+   public:
+    StereoNodeWrapper() {}
+    std::shared_ptr<dai::node::StereoDepth> stereo;
+    std::shared_ptr<dai::node::NeuralDepth> neuralDepth;
+    auto getNode();
+};
+
 class Stereo : public BaseNode {
    public:
     explicit Stereo(const std::string& daiNodeName,
@@ -57,6 +66,7 @@ class Stereo : public BaseNode {
     void closeQueues() override;
     std::vector<std::shared_ptr<sensor_helpers::ImagePublisher>> getPublishers() override;
     std::shared_ptr<dai::node::StereoDepth> getUnderlyingNode();
+    std::shared_ptr<dai::node::NeuralDepth> getNeuralDepthNode();
     bool isAligned();
     dai::CameraBoardSocket getSocketID();
     std::shared_ptr<SensorWrapper> getLeftSensor();
@@ -70,7 +80,9 @@ class Stereo : public BaseNode {
     void setupRightRectQueue(std::shared_ptr<dai::Device> device);
     void setupRectQueue(std::shared_ptr<dai::Device> device, dai::CameraFeatures& sensorInfo, std::shared_ptr<sensor_helpers::ImagePublisher> pub, bool isLeft);
     std::shared_ptr<sensor_helpers::ImagePublisher> stereoPub, leftRectPub, rightRectPub;
+    StereoNodeWrapper stereoNodeWrapper;
     std::shared_ptr<dai::node::StereoDepth> stereoCamNode;
+    std::shared_ptr<dai::node::NeuralDepth> neuralDepthNode;
     std::shared_ptr<dai::node::ImageAlign> alignNode;
     dai::Platform platform;
     std::unique_ptr<RGBD> rgbdNodeLeft, rgbdNodeRight;
@@ -83,6 +95,10 @@ class Stereo : public BaseNode {
     bool aligned;
     dai::Node::Output* leftOut;
     dai::Node::Output* rightOut;
+    template <typename F>
+    auto visitStereoCamNode(F&& f) {
+        return std::visit(std::forward<F>(f), stereoCamNode);
+    }
 };
 
 }  // namespace dai_nodes
