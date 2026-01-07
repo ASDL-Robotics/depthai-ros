@@ -35,8 +35,9 @@ Stereo::Stereo(const std::string& daiNodeName,
     using ParamNames = param_handlers::ParamNames;
     RCLCPP_DEBUG(getLogger(), "Creating node %s", daiNodeName.c_str());
     setNames();
+    platform = device->getPlatform();
     ph = std::make_unique<param_handlers::StereoParamHandler>(node, daiNodeName, device->getDeviceName(), rsCompat);
-    if(ph->getParam<bool>("i_use_neural_depth") && platform == dai::Platform::RVC2) {
+    if(ph->getParam<bool>("i_use_neural_depth") && (platform == dai::Platform::RVC2)) {
         throw std::runtime_error("Neural depth is not supported on RVC2");
     }
     auto alignSocket = dai::CameraBoardSocket::CAM_A;
@@ -107,7 +108,6 @@ Stereo::Stereo(const std::string& daiNodeName,
     // Check alignment, if board socket is one of the pairs, align.
     // if not it should be aligned externally by calling align method in pipeline creation
     auto socketID = ph->getSocketID();
-    platform = device->getPlatform();
     if(aligned) {
         if(platform == dai::Platform::RVC4) {
             alignNode = pipeline->create<dai::node::ImageAlign>();
