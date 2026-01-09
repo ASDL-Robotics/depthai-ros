@@ -20,6 +20,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.descriptions import ComposableNode
 from rclpy.node import Node
 from depthai_ros_driver.parameter_manager import ParameterManager
+
+
 @pytest.mark.rostest
 def generate_test_description():
     name = "oak"
@@ -70,7 +72,7 @@ class TestDriverLaunch(unittest.TestCase):
 
     def setUp(self):
         self.node = rclpy.create_node("test")
-        self.paramMan= ParameterManager(self.node)
+        self.paramMan = ParameterManager(self.node)
 
     def tearDown(self):
         self.node.destroy_node()
@@ -78,9 +80,8 @@ class TestDriverLaunch(unittest.TestCase):
     def test_driver_output(self, proc_output):
         proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
 
-
-    def testMessages(self,  width=0, height=0):
-        if(width == 0 or height == 0):
+    def testMessages(self, width=0, height=0):
+        if width == 0 or height == 0:
             return
         images_received = []
         info_received = []
