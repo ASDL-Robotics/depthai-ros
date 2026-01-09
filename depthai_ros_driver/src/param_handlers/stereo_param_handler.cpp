@@ -44,7 +44,6 @@ StereoParamHandler::StereoParamHandler(std::shared_ptr<rclcpp::Node> node, const
                           {"NEURAL_DEPTH_MEDIUM", dai::DeviceModelZoo::NEURAL_DEPTH_MEDIUM},
                           {"NEURAL_DEPTH_SMALL", dai::DeviceModelZoo::NEURAL_DEPTH_SMALL},
                           {"NEURAL_DEPTH_NANO", dai::DeviceModelZoo::NEURAL_DEPTH_NANO}};
-    stereoTypeMap = {{"STEREO", StereoType::Stereo}, {"NEURAL_DEPTH", StereoType::NeuralDepth}, {"STERO_AND_NEURAL_DEPTH", StereoType::StereoAndNeuralDepth}};
     declareAndLogParam<bool>("i_use_neural_depth", false);
     declareAndLogParam<int>(ParamNames::LOW_BANDWIDTH_QUALITY, 50);
     declareAndLogParam<int>(ParamNames::LOW_BANDWIDTH_PROFILE, 4);
@@ -209,6 +208,9 @@ void StereoParamHandler::declareParams(std::shared_ptr<dai::node::StereoDepth> s
     declareAndLogParam(ParamNames::HEIGHT, height, true);
     stereo->initialConfig = config;
 }
+dai::DeviceModelZoo StereoParamHandler::getModel() {
+    return model;
+}
 void StereoParamHandler::declareParams(std::shared_ptr<dai::node::NeuralDepth> neuralDepth) {
     model = utils::getValFromMap(declareAndLogParam<std::string>("i_neural_depth_model", "NEURAL_DEPTH_NANO"), neuralModelTypeMap);
 
@@ -217,13 +219,9 @@ void StereoParamHandler::declareParams(std::shared_ptr<dai::node::NeuralDepth> n
     currentConfig->setEdgeThreshold(declareAndLogParam<int>("r_edge_threshold", currentConfig->getEdgeThreshold()));
     neuralDepth->initialConfig = currentConfig;
 
-    std::unordered_map<dai::DeviceModelZoo, std::pair<int, int>> modelSizeMap = {{dai::DeviceModelZoo::NEURAL_DEPTH_LARGE, {768, 480}},
-                                                                                 {dai::DeviceModelZoo::NEURAL_DEPTH_MEDIUM, {576, 360}},
-                                                                                 {dai::DeviceModelZoo::NEURAL_DEPTH_SMALL, {480, 300}},
-                                                                                 {dai::DeviceModelZoo::NEURAL_DEPTH_NANO, {384, 240}}};
-
-    declareAndLogParam<int>(ParamNames::WIDTH, modelSizeMap.at(model).first);
-    declareAndLogParam<int>(ParamNames::HEIGHT, modelSizeMap.at(model).second);
+    auto size = neuralDepth->getInputSize(model);
+    declareAndLogParam<int>(ParamNames::WIDTH, size.first);
+    declareAndLogParam<int>(ParamNames::HEIGHT, size.second);
     declareAndLogParam<bool>("i_enable_alpha_scaling", false);
 }
 std::shared_ptr<dai::NeuralDepthConfig> StereoParamHandler::setRuntimeParams(const std::vector<rclcpp::Parameter>& params) {

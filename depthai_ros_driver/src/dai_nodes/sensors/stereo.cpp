@@ -67,22 +67,22 @@ Stereo::Stereo(const std::string& daiNodeName,
     if(ph->getParam<bool>("i_use_neural_depth")) {
         neuralDepthNode = pipeline->create<dai::node::NeuralDepth>();
         ph->declareParams(neuralDepthNode);
+        leftOut = left->getUnderlyingNode()->requestFullResolutionOutput();
+        rightOut = right->getUnderlyingNode()->requestFullResolutionOutput();
+        neuralDepthNode->build(*leftOut, *rightOut, ph->getModel());
     } else {
         stereoCamNode = pipeline->create<dai::node::StereoDepth>();
         ph->declareParams(stereoCamNode);
-    }
-    leftOut = left->getUnderlyingNode()->requestOutput(std::make_pair<int, int>(ph->getParam<int>(ParamNames::WIDTH), ph->getParam<int>(ParamNames::HEIGHT)),
-                                                       std::nullopt,
-                                                       dai::ImgResizeMode::CROP,
-                                                       ph->getParam<float>(ParamNames::FPS));
-    rightOut = right->getUnderlyingNode()->requestOutput(std::make_pair<int, int>(ph->getParam<int>(ParamNames::WIDTH), ph->getParam<int>(ParamNames::HEIGHT)),
-                                                         std::nullopt,
-                                                         dai::ImgResizeMode::CROP,
-                                                         ph->getParam<float>(ParamNames::FPS));
-    if(ph->getParam<bool>("i_use_neural_depth")) {
-        leftOut->link(neuralDepthNode->left);
-        rightOut->link(neuralDepthNode->right);
-    } else {
+        leftOut =
+            left->getUnderlyingNode()->requestOutput(std::make_pair<int, int>(ph->getParam<int>(ParamNames::WIDTH), ph->getParam<int>(ParamNames::HEIGHT)),
+                                                     std::nullopt,
+                                                     dai::ImgResizeMode::CROP,
+                                                     ph->getParam<float>(ParamNames::FPS));
+        rightOut =
+            right->getUnderlyingNode()->requestOutput(std::make_pair<int, int>(ph->getParam<int>(ParamNames::WIDTH), ph->getParam<int>(ParamNames::HEIGHT)),
+                                                      std::nullopt,
+                                                      dai::ImgResizeMode::CROP,
+                                                      ph->getParam<float>(ParamNames::FPS));
         leftOut->link(stereoCamNode->left);
         rightOut->link(stereoCamNode->right);
     }

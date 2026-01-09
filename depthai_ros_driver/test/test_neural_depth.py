@@ -18,8 +18,8 @@ from launch_ros.actions import ComposableNodeContainer
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.descriptions import ComposableNode
-
-
+from rclpy.node import Node
+from depthai_ros_driver.parameter_manager import ParameterManager
 @pytest.mark.rostest
 def generate_test_description():
     name = "oak"
@@ -28,7 +28,6 @@ def generate_test_description():
         "stereo": {
             "i_use_neural_depth": True,
             "i_aligned": False,
-            "i_neural_depth_model": "NEURAL_DEPTH_LARGE",
         },
     }
 
@@ -71,6 +70,7 @@ class TestDriverLaunch(unittest.TestCase):
 
     def setUp(self):
         self.node = rclpy.create_node("test")
+        self.paramMan= ParameterManager(self.node)
 
     def tearDown(self):
         self.node.destroy_node()
@@ -78,7 +78,10 @@ class TestDriverLaunch(unittest.TestCase):
     def test_driver_output(self, proc_output):
         proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
 
-    def test_published_stereo_image(self, proc_output):
+
+    def testMessages(self,  width=0, height=0):
+        if(width == 0 or height == 0):
+            return
         images_received = []
         info_received = []
         sub = self.node.create_subscription(
@@ -101,68 +104,30 @@ class TestDriverLaunch(unittest.TestCase):
                     break
             self.assertGreater(len(images_received), 30)
             self.assertGreater(len(info_received), 30)
+            self.assertEqual(images_received[0].width, width)
+            self.assertEqual(images_received[0].height, height)
         finally:
             self.node.destroy_subscription(sub)
 
-    def test_change_neural_depth_model(self, proc_output):
-        srv = self.node.create_client(SetParameters, "/oak/set_parameters")
-        while not srv.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().info("service not available, waiting again...")
-        req = SetParameters.Request()
-        req.parameters = [
+    def test_published_stereo_image(self, proc_output):
+        parameters = [
             Parameter(
                 name="stereo.i_neural_depth_model",
-                value=ParameterValue(type=4, string_value="NEURAL_DEPTH_SMALL"),
+                value=ParameterValue(type=4, string_value="NEURAL_DEPTH_LARGE"),
             )
         ]
-        future = srv.call_async(req)
-        rclpy.spin_until_future_complete(self.node, future)
-        self.assertTrue(future.result().results[0].successful)
-        self.node.destroy_client(srv)
+        self.assertTrue(self.paramMan.setParameters(parameters))
+        self.testMessages(768, 480)
 
-        srv = self.node.create_client(Trigger, "/oak/stop_driver")
-        while not srv.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().info("service not available, waiting again...")
-        req = Trigger.Request()
-        future = srv.call_async(req)
-        rclpy.spin_until_future_complete(self.node, future)
-        proc_output.assertWaitFor("Driver stopped!", timeout=10.0, stream="stderr")
-        self.assertTrue(future.result().success)
-        self.node.destroy_client(srv)
-
-        srv = self.node.create_client(Trigger, "/oak/start_driver")
-        while not srv.wait_for_service(timeout_sec=1.0):
-            self.node.get_logger().info("service not available, waiting again...")
-        req = Trigger.Request()
-        future = srv.call_async(req)
-        rclpy.spin_until_future_complete(self.node, future)
-        proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
-        self.assertTrue(future.result().success)
-        self.node.destroy_client(srv)
-        images_received = []
-        info_received = []
-        sub = self.node.create_subscription(
-            Image,
-            "/oak/stereo/image_raw",
-            lambda msg: images_received.append(msg),
-            10,
-        )
-        sub_info = self.node.create_subscription(
-            CameraInfo,
-            "/oak/stereo/camera_info",
-            lambda msg: info_received.append(msg),
-            10,
-        )
-        try:
-            end_time = time.time() + 5
-            while time.time() < end_time:
-                rclpy.spin_once(self.node, timeout_sec=1)
-                if len(images_received) > 30 and len(info_received) > 30:
-                    break
-            self.assertGreater(len(images_received), 30)
-            self.assertGreater(len(info_received), 30)
-        finally:
-            self.node.destroy_subscription(sub)
+    def test_change_neural_depth_model(self, proc_output):
+        parameters = [
+            Parameter(
+                name="stereo.i_neural_depth_model",
+                value=ParameterValue(type=4, string_value="NEURAL_DEPTH_NANO"),
+            )
+        ]
+        self.assertTrue(self.paramMan.setParameters(parameters))
+        self.testMessages(384, 240)
 
 
 @launch_testing.post_shutdown_test()
