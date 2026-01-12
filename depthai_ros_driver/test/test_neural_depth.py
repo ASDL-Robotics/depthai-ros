@@ -1,6 +1,7 @@
 import os
 import unittest
 import time
+from functools import partial
 import launch
 import launch_testing
 import launch_testing.actions
@@ -19,9 +20,10 @@ from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.descriptions import ComposableNode
 from rclpy.node import Node
-from depthai_ros_driver.parameter_manager import ParameterManager
+from depthai_ros_driver.test_helper import TestHelper
 
 IS_RVC4 = os.getenv("DEPTHAI_PLATFORM") == "rvc4"
+
 
 @pytest.mark.rostest
 @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
@@ -63,7 +65,6 @@ def generate_test_description():
     ), {"driver_node": driver}
 
 
-
 class TestDriverLaunch(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -75,7 +76,7 @@ class TestDriverLaunch(unittest.TestCase):
 
     def setUp(self):
         self.node = rclpy.create_node("test")
-        self.paramMan = ParameterManager(self.node)
+        self.testHelper = TestHelper(self.node)
 
     def tearDown(self):
         self.node.destroy_node()
@@ -85,35 +86,13 @@ class TestDriverLaunch(unittest.TestCase):
         proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
 
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
-    def testMessages(self, width=0, height=0):
+    def testSize(self, width=0, height=0, msg = Image()):
         if width == 0 or height == 0:
             return
-        images_received = []
-        info_received = []
-        sub = self.node.create_subscription(
-            Image,
-            "/oak/stereo/image_raw",
-            lambda msg: images_received.append(msg),
-            10,
-        )
-        sub_info = self.node.create_subscription(
-            CameraInfo,
-            "/oak/stereo/camera_info",
-            lambda msg: info_received.append(msg),
-            10,
-        )
-        try:
-            end_time = time.time() + 5
-            while time.time() < end_time:
-                rclpy.spin_once(self.node, timeout_sec=1)
-                if len(images_received) > 30 and len(info_received) > 30:
-                    break
-            self.assertGreater(len(images_received), 30)
-            self.assertGreater(len(info_received), 30)
-            self.assertEqual(images_received[0].width, width)
-            self.assertEqual(images_received[0].height, height)
-        finally:
-            self.node.destroy_subscription(sub)
+
+        self.assertEqual(msg.width, width)
+        self.assertEqual(msg.height, height)
+        return msg
 
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
     def test_published_stereo_image(self, proc_output):
@@ -123,8 +102,9 @@ class TestDriverLaunch(unittest.TestCase):
                 value=ParameterValue(type=4, string_value="NEURAL_DEPTH_LARGE"),
             )
         ]
-        self.assertTrue(self.paramMan.setParameters(parameters))
-        self.testMessages(768, 480)
+        self.assertTrue(self.testHelper.setParameters(parameters))
+        cb = partial(self.testSize,768, 480)
+        self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw", cb)
 
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
     def test_change_neural_depth_model(self, proc_output):
@@ -134,8 +114,9 @@ class TestDriverLaunch(unittest.TestCase):
                 value=ParameterValue(type=4, string_value="NEURAL_DEPTH_NANO"),
             )
         ]
-        self.assertTrue(self.paramMan.setParameters(parameters))
-        self.testMessages(384, 240)
+        self.assertTrue(self.testHelper.setParameters(parameters))
+        cb = partial(self.testSize, 384, 240)
+        self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw", cb)
 
 
 @launch_testing.post_shutdown_test()
