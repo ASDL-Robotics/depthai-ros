@@ -316,6 +316,9 @@ void Stereo::setupStereoQueue(std::shared_ptr<dai::Device> device) {
     pubConf.publishCompressed = ph->getParam<bool>(ParamNames::PUBLISH_COMPRESSED);
 
     stereoPub->setup(device, convConfig, pubConf);
+    if(ph->getParam<bool>("i_use_neural_depth")) {
+        neuralControl = neuralDepthNode->inputConfig.createInputQueue();
+    }
 }
 
 void Stereo::setupQueues(std::shared_ptr<dai::Device> device) {
@@ -470,6 +473,12 @@ int Stereo::getWidth() {
 }
 int Stereo::getHeight() {
     return ph->getParam<int>(param_handlers::ParamNames::HEIGHT);
+}
+void Stereo::updateParams(const std::vector<rclcpp::Parameter>& params) {
+    if(ph->getParam<bool>("i_use_neural_depth")) {
+        auto ctrl = ph->setRuntimeParams(params);
+        neuralControl->send(ctrl);
+    }
 }
 
 }  // namespace dai_nodes

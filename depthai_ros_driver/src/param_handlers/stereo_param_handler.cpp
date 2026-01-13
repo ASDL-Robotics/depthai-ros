@@ -213,7 +213,6 @@ dai::DeviceModelZoo StereoParamHandler::getModel() {
 }
 void StereoParamHandler::declareParams(std::shared_ptr<dai::node::NeuralDepth> neuralDepth) {
     model = utils::getValFromMap(declareAndLogParam<std::string>("i_neural_depth_model", "NEURAL_DEPTH_SMALL"), neuralModelTypeMap);
-
     auto currentConfig = neuralDepth->initialConfig;
     currentConfig->setConfidenceThreshold(declareAndLogParam<int>("r_confidence_threshold", currentConfig->getConfidenceThreshold()));
     currentConfig->setEdgeThreshold(declareAndLogParam<int>("r_edge_threshold", currentConfig->getEdgeThreshold()));

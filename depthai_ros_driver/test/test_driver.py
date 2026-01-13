@@ -145,7 +145,7 @@ class TestDriverLaunch(unittest.TestCase):
                 value=ParameterValue(type=3, double_value=0.4),
             )
         ]
-        self.assertTrue(self.testHelper.setParameters(parameters))
+        self.assertTrue(self.testHelper.setParameters(parameters, False))
 
         value = self.testHelper.getParameter("driver.r_laser_dot_intensity")
         self.assertAlmostEqual(value.double_value, 0.4)

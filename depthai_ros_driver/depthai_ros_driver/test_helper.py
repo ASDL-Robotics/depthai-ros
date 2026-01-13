@@ -25,14 +25,17 @@ class TestHelper:
         while not self.getParamSrv.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().info("service not available, waiting again...")
 
-    def setParameters(self, params: list[Parameter]) -> bool:
+    def setParameters(self, params: list[Parameter], restart: bool = True) -> bool:
         req = SetParameters.Request()
         req.parameters = params
         future = self.setParamSrv.call_async(req)
         rclpy.spin_until_future_complete(self.node, future)
         self.node.get_logger().info(str(future.result().results[0].reason))
         if future.result().results[0].successful:
-            return self.restartDriver()
+            if restart:
+                return self.restartDriver()
+            else:
+                return True
         else:
             return False
     def getParameter(self, param: str) -> ParameterValue:

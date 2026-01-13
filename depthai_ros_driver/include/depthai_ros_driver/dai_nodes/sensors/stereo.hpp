@@ -12,6 +12,7 @@ namespace dai {
 class Pipeline;
 class Device;
 class MessageQueue;
+class InputQueue;
 class ADatatype;
 class ImgFrame;
 namespace node {
@@ -59,6 +60,7 @@ class Stereo : public BaseNode {
                     dai::CameraBoardSocket rightSocket = dai::CameraBoardSocket::CAM_C);
     ~Stereo();
     void setupQueues(std::shared_ptr<dai::Device> dvice) override;
+    void updateParams(const std::vector<rclcpp::Parameter>& params)override;
     void link(dai::Node::Input& in, int linkType = 1) override;
     dai::Node::Input& getInput(int linkType = 0) override;
     void setNames() override;
@@ -90,15 +92,12 @@ class Stereo : public BaseNode {
     std::unique_ptr<BaseNode> featureTrackerLeftR, featureTrackerRightR, nnNodeLeft, nnNodeRight;
     std::unique_ptr<param_handlers::StereoParamHandler> ph;
     std::shared_ptr<dai::MessageQueue> leftRectQ, rightRectQ;
+    std::shared_ptr<dai::InputQueue> neuralControl;
     std::string stereoQName, leftRectQName, rightRectQName;
     dai::CameraFeatures leftSensInfo, rightSensInfo;
     bool aligned;
     dai::Node::Output* leftOut;
     dai::Node::Output* rightOut;
-    template <typename F>
-    auto visitStereoCamNode(F&& f) {
-        return std::visit(std::forward<F>(f), stereoCamNode);
-    }
 };
 
 }  // namespace dai_nodes
