@@ -86,7 +86,7 @@ class TestDriverLaunch(unittest.TestCase):
         proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
 
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
-    def testSize(self, width=0, height=0, msg = Image()):
+    def testSize(self, width=0, height=0, msg=Image()):
         if width == 0 or height == 0:
             return
 
@@ -103,7 +103,7 @@ class TestDriverLaunch(unittest.TestCase):
             )
         ]
         self.assertTrue(self.testHelper.setParameters(parameters))
-        cb = partial(self.testSize,768, 480)
+        cb = partial(self.testSize, 768, 480)
         self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw", cb)
 
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")

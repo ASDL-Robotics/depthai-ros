@@ -7,18 +7,21 @@ from std_srvs.srv import Trigger
 
 
 class TestHelper:
-    def __init__(self, node: Node) -> None:
+    def __init__(self, node: Node, rsMode=False) -> None:
         self.node = node
-        self.stopSrv = self.node.create_client(Trigger, "/oak/stop_driver")
+        prefix = "/oak"
+        if rsMode:
+            prefix="/camera/camera"
+        self.stopSrv = self.node.create_client(Trigger, f"{prefix}/stop_driver")
         while not self.stopSrv.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().info("service not available, waiting again...")
-        self.startSrv = self.node.create_client(Trigger, "/oak/start_driver")
+        self.startSrv = self.node.create_client(Trigger, f"{prefix}/start_driver")
         while not self.startSrv.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().info("service not available, waiting again...")
-        self.setParamSrv = self.node.create_client(SetParameters, "/oak/set_parameters")
+        self.setParamSrv = self.node.create_client(SetParameters, f"{prefix}/set_parameters")
         while not self.setParamSrv.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().info("service not available, waiting again...")
-        self.getParamSrv = self.node.create_client(GetParameters, "/oak/get_parameters")
+        self.getParamSrv = self.node.create_client(GetParameters, f"{prefix}/get_parameters")
         while not self.getParamSrv.wait_for_service(timeout_sec=1.0):
             self.node.get_logger().info("service not available, waiting again...")
 

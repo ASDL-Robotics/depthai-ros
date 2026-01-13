@@ -14,8 +14,10 @@ from sensor_msgs.msg import Image
 
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from depthai_ros_driver.test_helper import TestHelper
 
 IS_RVC2 = os.getenv("DEPTHAI_PLATFORM") == "rvc2"
+
 
 @pytest.mark.rostest
 @unittest.skipUnless(IS_RVC2, reason="Test not supported on RVC4")
@@ -82,6 +84,7 @@ class TestDriverLaunch(unittest.TestCase):
 
     def setUp(self):
         self.node = rclpy.create_node("test")
+        self.testHelper = TestHelper(self.node)
 
     def tearDown(self):
         self.node.destroy_node()
@@ -91,19 +94,11 @@ class TestDriverLaunch(unittest.TestCase):
 
     @unittest.skipUnless(IS_RVC2, reason="Test not supported on RVC4")
     def test_published_segmentation_image(self, proc_output):
-        images_received = []
-        sub = self.node.create_subscription(
-            Image, "/oak/nn/image_raw", lambda msg: images_received.append(msg), 10
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(Image, "/oak/nn/image_raw")
         )
-        try:
-            end_time = time.time() + 5
-            while time.time() < end_time:
-                rclpy.spin_once(self.node, timeout_sec=1)
-                if len(images_received) > 30:
-                    break
-            self.assertGreater(len(images_received), 30)
-        finally:
-            self.node.destroy_subscription(sub)
+
+
 @launch_testing.post_shutdown_test()
 class TestShutdown(unittest.TestCase):
     @unittest.skipUnless(IS_RVC2, reason="Test not supported on RVC4")

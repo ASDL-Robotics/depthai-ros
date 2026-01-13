@@ -100,12 +100,20 @@ class TestDriverLaunch(unittest.TestCase):
         proc_output.assertWaitFor("Driver ready!", timeout=10.0, stream="stderr")
 
     def test_published_rgb_image(self, proc_output):
-        self.assertTrue(self.testHelper.testIncomingMessages(Image,"/oak/rgb/image_raw"))
-        self.assertTrue(self.testHelper.testIncomingMessages(CameraInfo, "/oak/rgb/camera_info"))
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(Image, "/oak/rgb/image_raw")
+        )
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(CameraInfo, "/oak/rgb/camera_info")
+        )
 
     def test_published_stereo_image(self, proc_output):
-        self.assertTrue(self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw"))
-        self.assertTrue(self.testHelper.testIncomingMessages(CameraInfo, "/oak/stereo/camera_info"))
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw")
+        )
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(CameraInfo, "/oak/stereo/camera_info")
+        )
 
     def test_published_imu_messages(self, proc_output):
         self.testHelper.testIncomingMessages(Imu, "/oak/imu/data_raw")
@@ -155,13 +163,19 @@ class TestDriverLaunch(unittest.TestCase):
         ]
         self.assertTrue(self.testHelper.setParameters(parameters))
         value = self.testHelper.getParameter("rgb.i_calibration_file")
-        self.assertEqual(value.string_value, "package://depthai_ros_driver/config/calibration/rgb.yaml")
+        self.assertEqual(
+            value.string_value,
+            "package://depthai_ros_driver/config/calibration/rgb.yaml",
+        )
+
         # in cb check the distortion model and return the msg
         def cb(msg):
             self.assertEqual(msg.distortion_model, "plumb_bob")
             return msg
-        self.assertTrue(self.testHelper.testIncomingMessages(CameraInfo, "/oak/rgb/camera_info", cb))
 
+        self.assertTrue(
+            self.testHelper.testIncomingMessages(CameraInfo, "/oak/rgb/camera_info", cb)
+        )
 
 
 @launch_testing.post_shutdown_test()
