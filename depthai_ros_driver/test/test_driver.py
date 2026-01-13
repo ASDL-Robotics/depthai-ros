@@ -149,8 +149,7 @@ class TestDriverLaunch(unittest.TestCase):
                 name="rgb.i_calibration_file",
                 value=ParameterValue(
                     type=4,
-                    string_value=get_package_share_directory("depthai_ros_driver")
-                    + "/config/calibration/rgb.yaml",
+                    string_value="package://depthai_ros_driver/config/calibration/rgb.yaml",
                 ),
             )
         ]
@@ -160,7 +159,6 @@ class TestDriverLaunch(unittest.TestCase):
         # in cb check the distortion model and return the msg
         def cb(msg):
             self.assertEqual(msg.distortion_model, "plumb_bob")
-            # self.node.get_logger().info(msg)
             return msg
         self.assertTrue(self.testHelper.testIncomingMessages(CameraInfo, "/oak/rgb/camera_info", cb))
 
