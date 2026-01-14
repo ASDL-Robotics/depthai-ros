@@ -168,7 +168,6 @@ class TestDriverLaunch(unittest.TestCase):
             "package://depthai_ros_driver/config/calibration/rgb.yaml",
         )
 
-        # in cb check the distortion model and return the msg
         def cb(msg):
             self.assertEqual(msg.distortion_model, "plumb_bob")
             return msg

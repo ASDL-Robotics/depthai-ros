@@ -32,12 +32,14 @@ void BasePipeline::addRgbdNode(std::vector<std::unique_ptr<dai_nodes::BaseNode>>
                                dai_nodes::SensorWrapper& rgb,
                                dai_nodes::Stereo& stereo,
                                const std::string& name) {
-    auto rgbd = std::make_unique<dai_nodes::RGBD>(name, node, pipeline, device, rsCompat, rgb, stereo.getUnderlyingNode(), stereo.isAligned());
-    if(device->getPlatform() == dai::Platform::RVC4) {
-        stereo.link(rgbd->getInput(static_cast<int>(dai_nodes::link_types::RGBDLinkType::depth)),
-                    static_cast<int>(dai_nodes::link_types::StereoLinkType::stereo));
+    if(ph->getParam<bool>("i_enable_rgbd")) {
+        auto rgbd = std::make_unique<dai_nodes::RGBD>(name, node, pipeline, device, rsCompat, rgb, stereo.getUnderlyingNode(), stereo.isAligned());
+        if(device->getPlatform() == dai::Platform::RVC4) {
+            stereo.link(rgbd->getInput(static_cast<int>(dai_nodes::link_types::RGBDLinkType::depth)),
+                        static_cast<int>(dai_nodes::link_types::StereoLinkType::stereo));
+        }
+        daiNodes.push_back(std::move(rgbd));
     }
-    daiNodes.push_back(std::move(rgbd));
 }
 void BasePipeline::addRgbdNode(std::vector<std::unique_ptr<dai_nodes::BaseNode>>& daiNodes,
                                std::shared_ptr<rclcpp::Node> node,
@@ -48,11 +50,13 @@ void BasePipeline::addRgbdNode(std::vector<std::unique_ptr<dai_nodes::BaseNode>>
                                dai_nodes::SensorWrapper& rgb,
                                dai_nodes::ToF& tof,
                                const std::string& name) {
-    auto rgbd = std::make_unique<dai_nodes::RGBD>(name, node, pipeline, device, rsCompat, rgb, tof, tof.isAligned());
-    if(tof.isAligned()) {
-        tof.link(rgbd->getInput(static_cast<int>(dai_nodes::link_types::RGBDLinkType::depth)));
+    if(ph->getParam<bool>("i_enable_rgbd")) {
+        auto rgbd = std::make_unique<dai_nodes::RGBD>(name, node, pipeline, device, rsCompat, rgb, tof, tof.isAligned());
+        if(tof.isAligned()) {
+            tof.link(rgbd->getInput(static_cast<int>(dai_nodes::link_types::RGBDLinkType::depth)));
+        }
+        daiNodes.push_back(std::move(rgbd));
     }
-    daiNodes.push_back(std::move(rgbd));
 }
 void BasePipeline::addNnNode(std::vector<std::unique_ptr<dai_nodes::BaseNode>>& daiNodes,
                              std::shared_ptr<rclcpp::Node> node,
