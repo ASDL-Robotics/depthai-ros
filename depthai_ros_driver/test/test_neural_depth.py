@@ -117,6 +117,7 @@ class TestDriverLaunch(unittest.TestCase):
         self.assertTrue(self.testHelper.setParameters(parameters))
         cb = partial(self.testSize, 384, 240)
         self.testHelper.testIncomingMessages(Image, "/oak/stereo/image_raw", cb)
+
     @unittest.skipUnless(IS_RVC4, reason="Test not supported on RVC2")
     def test_change_neural_depth_runtime_parameters(self, proc_output):
         parameters = [
@@ -131,9 +132,9 @@ class TestDriverLaunch(unittest.TestCase):
         ]
         self.assertTrue(self.testHelper.setParameters(parameters, False))
 
-        value = self.testHelper.getParameter("driver.r_edge_threshold")
+        value = self.testHelper.getParameter("stereo.r_edge_threshold")
         self.assertAlmostEqual(value.integer_value, 5)
-        value = self.testHelper.getParameter("driver.r_confidence_threshold")
+        value = self.testHelper.getParameter("stereo.r_confidence_threshold")
         self.assertAlmostEqual(value.integer_value, 100)
 
 
