@@ -4,7 +4,7 @@
   <version>2.12.2</version>
   <description>The depthai_bridge package</description>
 
-  <maintainer email="adam.serafin@luxonis.com">Adam Serafin</maintainer>
+  <author>Adam Serafin</author>
   <author>Sachin Guruswamy</author>
 
   <license>MIT</license>
