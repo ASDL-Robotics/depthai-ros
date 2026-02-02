@@ -4,7 +4,8 @@
   <version>3.1.0</version>
   <description>Depthai ROS Monolithic node.</description>
   <author>Adam Serafin</author>
-  <maintainer email="adam.serafin@luxonis.com">Adam Serafin</maintainer>
+  <!-- temporary -->
+  <maintainer email="matevz.morato@luxonis.com">Matevz Morato</maintainer>
 
   <license>MIT</license>
 
