@@ -6,6 +6,8 @@
 
   <author>Sachin Guruswamy</author>
   <author>Adam Serafin</author>
+  <!-- temporary -->
+  <maintainer email="matevz.morato@luxonis.com">Matevz Morato</maintainer>
 
   <license>MIT</license>
   
