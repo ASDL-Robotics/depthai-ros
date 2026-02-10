@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/driver.hpp"
+#include "depthai_ros_driver_v3/driver.hpp"
 #include "rclcpp/executors.hpp"
 #include "rclcpp/utilities.hpp"
 

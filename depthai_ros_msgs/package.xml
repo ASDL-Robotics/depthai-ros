@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="3">
-  <name>depthai_ros_msgs</name>
+  <name>depthai_ros_msgs_v3</name>
   <version>3.1.0</version>
   <description>Package to keep interface independent of the driver</description>
 

@@ -7,8 +7,8 @@ TrackDetectionConverter::TrackDetectionConverter(std::string frameName, int widt
 
 TrackDetectionConverter::~TrackDetectionConverter() = default;
 
-void TrackDetectionConverter::toRosMsg(std::shared_ptr<dai::Tracklets> trackData, std::deque<depthai_ros_msgs::msg::TrackDetection2DArray>& opDetectionMsgs) {
-    depthai_ros_msgs::msg::TrackDetection2DArray opDetectionMsg;
+void TrackDetectionConverter::toRosMsg(std::shared_ptr<dai::Tracklets> trackData, std::deque<depthai_ros_msgs_v3::msg::TrackDetection2DArray>& opDetectionMsgs) {
+    depthai_ros_msgs_v3::msg::TrackDetection2DArray opDetectionMsg;
     opDetectionMsg.header = getRosHeader(trackData);
     opDetectionMsg.detections.resize(trackData->tracklets.size());
 
@@ -54,12 +54,12 @@ void TrackDetectionConverter::toRosMsg(std::shared_ptr<dai::Tracklets> trackData
     opDetectionMsgs.push_back(opDetectionMsg);
 }
 
-depthai_ros_msgs::msg::TrackDetection2DArray::SharedPtr TrackDetectionConverter::toRosMsgPtr(std::shared_ptr<dai::Tracklets> trackData) {
-    std::deque<depthai_ros_msgs::msg::TrackDetection2DArray> msgQueue;
+depthai_ros_msgs_v3::msg::TrackDetection2DArray::SharedPtr TrackDetectionConverter::toRosMsgPtr(std::shared_ptr<dai::Tracklets> trackData) {
+    std::deque<depthai_ros_msgs_v3::msg::TrackDetection2DArray> msgQueue;
     toRosMsg(trackData, msgQueue);
     auto msg = msgQueue.front();
 
-    depthai_ros_msgs::msg::TrackDetection2DArray::SharedPtr ptr = std::make_shared<depthai_ros_msgs::msg::TrackDetection2DArray>(msg);
+    depthai_ros_msgs_v3::msg::TrackDetection2DArray::SharedPtr ptr = std::make_shared<depthai_ros_msgs_v3::msg::TrackDetection2DArray>(msg);
 
     return ptr;
 }

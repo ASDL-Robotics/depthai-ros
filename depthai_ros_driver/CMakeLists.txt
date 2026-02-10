@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(depthai_ros_driver VERSION 3.1.0)
+project(depthai_ros_driver_v3 VERSION 3.1.0)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_SHARED_LIBS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -52,7 +52,7 @@ target_link_libraries(
   camera_info_manager::camera_info_manager
   ${sensor_msgs_TARGETS}
   cv_bridge::cv_bridge
-  depthai_bridge::depthai_bridge
+  depthai_bridge_v3::depthai_bridge_v3
   depthai::core
   image_transport::image_transport
   rclcpp::rclcpp
@@ -85,11 +85,11 @@ target_link_libraries(
   image_transport::image_transport
   camera_info_manager::camera_info_manager
   depthai::core
-  depthai_bridge::depthai_bridge
+  depthai_bridge_v3::depthai_bridge_v3
   rclcpp::rclcpp
   diagnostic_updater::diagnostic_updater
   ${geometry_msgs_TARGETS}
-  ${depthai_ros_msgs_TARGETS}
+  ${depthai_ros_msgs_v3_TARGETS}
   ${nav_msgs_TARGETS}
   ${std_msgs_TARGETS}
   ${std_srvs_TARGETS}
@@ -103,7 +103,7 @@ add_library(
 
 target_link_libraries(
   ${NN_LIB_NAME}
-  PUBLIC ${COMMON_LIB_NAME} depthai::core depthai_bridge::depthai_bridge
+  PUBLIC ${COMMON_LIB_NAME} depthai::core depthai_bridge_v3::depthai_bridge_v3
   rclcpp::rclcpp ${vision_msgs_TARGETS})
 
 add_library(
@@ -125,13 +125,13 @@ add_executable(driver_node src/driver_node.cpp)
 target_link_libraries(driver_node PUBLIC ${PROJECT_NAME} ${SENSOR_LIB_NAME}
   ${NN_LIB_NAME} ${COMMON_LIB_NAME})
 rclcpp_components_register_nodes(${PROJECT_NAME} PLUGIN
-  "${PROJECT_NAME}::Driver" EXECUTABLE driver)
+  "depthai_ros_driver::Driver" EXECUTABLE driver)
 pluginlib_export_plugin_description_file(${PROJECT_NAME} plugins.xml)
 ament_export_include_directories(include)
 
 ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_libraries(${PROJECT_NAME})
-ament_export_dependencies(camera_info_manager cv_bridge depthai_bridge depthai
+ament_export_dependencies(camera_info_manager cv_bridge depthai_bridge_v3 depthai
   diagnostic_updater std_srvs)
 
 install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})

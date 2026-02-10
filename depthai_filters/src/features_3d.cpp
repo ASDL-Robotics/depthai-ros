@@ -37,7 +37,7 @@ float Features3D::getDepthAt(int x, int y, const sensor_msgs::msg::Image::ConstS
 }
 void Features3D::overlayCB(const sensor_msgs::msg::Image::ConstSharedPtr& depth,
                            const sensor_msgs::msg::CameraInfo::ConstSharedPtr& info,
-                           const depthai_ros_msgs::msg::TrackedFeatures::ConstSharedPtr& features) {
+                           const depthai_ros_msgs_v3::msg::TrackedFeatures::ConstSharedPtr& features) {
     sensor_msgs::msg::PointCloud2 cloud;
     cloud.header.frame_id = info->header.frame_id;  // Set this to your camera's frame
     cloud.header.stamp = this->get_clock()->now();

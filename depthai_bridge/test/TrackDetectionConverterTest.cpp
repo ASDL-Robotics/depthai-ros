@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "depthai_bridge/TrackDetectionConverter.hpp"
-#include "depthai_ros_msgs/msg/track_detection2_d_array.hpp"
+#include "depthai_ros_msgs_v3/msg/track_detection2_d_array.hpp"
 
 namespace depthai_bridge {
 
@@ -17,7 +17,7 @@ TEST(TrackDetectionConverterTest, ToRosMsgTest) {
     tracklet.status = dai::Tracklet::TrackingStatus::TRACKED;
     trackData->tracklets.push_back(tracklet);
 
-    std::deque<depthai_ros_msgs::msg::TrackDetection2DArray> opDetectionMsgs;
+    std::deque<depthai_ros_msgs_v3::msg::TrackDetection2DArray> opDetectionMsgs;
 
     converter.toRosMsg(trackData, opDetectionMsgs);
 

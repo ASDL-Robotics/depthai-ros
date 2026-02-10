@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_helpers.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_helpers.hpp"
 
 #include "camera_info_manager/camera_info_manager.hpp"
 #include "depthai/capabilities/ImgFrameCapability.hpp"

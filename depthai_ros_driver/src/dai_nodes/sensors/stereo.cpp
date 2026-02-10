@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/stereo.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/stereo.hpp"
 
 #include <optional>
 #include <stdexcept>
@@ -10,16 +10,16 @@
 #include "depthai/pipeline/datatype/ImgFrame.hpp"
 #include "depthai/pipeline/node/NeuralDepth.hpp"
 #include "depthai/pipeline/node/StereoDepth.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/nn_helpers.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/spatial_nn_wrapper.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/feature_tracker.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/rgbd.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_helpers.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_wrapper.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/param_handlers/stereo_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/nn_helpers.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/spatial_nn_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/feature_tracker.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/rgbd.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_helpers.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_wrapper.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/stereo_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {

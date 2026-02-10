@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
 
 #include <rclcpp/logging.hpp>
 
@@ -8,8 +8,8 @@
 #include "depthai/pipeline/node/VideoEncoder.hpp"
 #include "depthai/properties/VideoEncoderProperties.hpp"
 #include "depthai_bridge/ImageConverter.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_helpers.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_helpers.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "ffmpeg_image_transport_msgs/msg/ffmpeg_packet.hpp"
 #include "image_transport/image_transport.hpp"
 #include "sensor_msgs/msg/compressed_image.hpp"

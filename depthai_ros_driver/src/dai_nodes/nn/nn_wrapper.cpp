@@ -1,10 +1,10 @@
-#include "depthai_ros_driver/dai_nodes/nn/nn_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/nn_wrapper.hpp"
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/Pipeline.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/detection.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/segmentation.hpp"
-#include "depthai_ros_driver/param_handlers/nn_param_handler.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/detection.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/segmentation.hpp"
+#include "depthai_ros_driver_v3/param_handlers/nn_param_handler.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {

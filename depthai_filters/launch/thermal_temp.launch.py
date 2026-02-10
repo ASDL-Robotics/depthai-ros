@@ -10,7 +10,7 @@ from launch_ros.descriptions import ComposableNode
 
 
 def launch_setup(context, *args, **kwargs):
-    depthai_prefix = get_package_share_directory("depthai_ros_driver")
+    depthai_prefix = get_package_share_directory("depthai_ros_driver_v3")
     name = LaunchConfiguration('name').perform(context)
     return [
         IncludeLaunchDescription(
@@ -22,7 +22,7 @@ def launch_setup(context, *args, **kwargs):
             target_container=name+"_container",
             composable_node_descriptions=[
                     ComposableNode(
-                        package="depthai_filters",
+                        package="depthai_filters_v3",
                         name="thermal_temp",
                         plugin="depthai_filters::ThermalTemp",
                         remappings=[('/thermal/raw_data/image_raw', name+'/thermal/raw_data/image_raw'),],

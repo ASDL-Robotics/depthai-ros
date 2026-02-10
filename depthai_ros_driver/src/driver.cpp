@@ -1,11 +1,11 @@
-#include "depthai_ros_driver/driver.hpp"
+#include "depthai_ros_driver_v3/driver.hpp"
 
 #include <fstream>
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/Pipeline.hpp"
 #include "depthai_bridge/TFPublisher.hpp"
-#include "depthai_ros_driver/pipeline/pipeline_generator.hpp"
+#include "depthai_ros_driver_v3/pipeline/pipeline_generator.hpp"
 #include "diagnostic_msgs/msg/diagnostic_array.hpp"
 
 namespace depthai_ros_driver {

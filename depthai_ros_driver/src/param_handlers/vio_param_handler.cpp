@@ -1,10 +1,10 @@
-#include "depthai_ros_driver/param_handlers/vio_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/vio_param_handler.hpp"
 
 #include <ament_index_cpp/get_package_share_directory.hpp>
 
 #include "depthai/basalt/BasaltVIO.hpp"
 #include "depthai/common/CameraBoardSocket.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {
@@ -66,7 +66,7 @@ void VioParamHandler::declareParams(std::shared_ptr<dai::node::BasaltVIO> vio) {
     declareAndLogParam<std::string>("i_child_frame_id", "oak_parent_frame");
     std::string configPath = declareAndLogParam<std::string>("i_config_path", "depthai_ros_driver_default_vio.json");
     if(configPath.find("depthai_ros_driver_default_vio.json") != std::string::npos) {
-        configPath = ament_index_cpp::get_package_share_directory("depthai_ros_driver") + "/config/custom/" + configPath;
+        configPath = ament_index_cpp::get_package_share_directory("depthai_ros_driver_v3") + "/config/custom/" + configPath;
     }
     auto finalPath = declareAndLogParam<std::string>("config_path", configPath, true);
 

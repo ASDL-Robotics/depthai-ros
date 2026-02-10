@@ -1,13 +1,13 @@
-#include "depthai_ros_driver/dai_nodes/sensors/imu.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/imu.hpp"
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/MessageQueue.hpp"
 #include "depthai/pipeline/Pipeline.hpp"
 #include "depthai/pipeline/node/IMU.hpp"
 #include "depthai_bridge/ImuConverter.hpp"
-#include "depthai_ros_driver/param_handlers/imu_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
-#include "depthai_ros_msgs/msg/imu_with_magnetic_field.hpp"
+#include "depthai_ros_driver_v3/param_handlers/imu_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
+#include "depthai_ros_msgs_v3/msg/imu_with_magnetic_field.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {
@@ -63,7 +63,7 @@ void Imu::setupQueues(std::shared_ptr<dai::Device> /* device */) {
             break;
         }
         case param_handlers::imu::ImuMsgType::IMU_WITH_MAG: {
-            daiImuPub = getROSNode()->create_publisher<depthai_ros_msgs::msg::ImuWithMagneticField>("~/" + getName() + topicSuffix, 10, options);
+            daiImuPub = getROSNode()->create_publisher<depthai_ros_msgs_v3::msg::ImuWithMagneticField>("~/" + getName() + topicSuffix, 10, options);
             cbID = imuQ->addCallback(std::bind(&Imu::imuDaiRosQCB, this, std::placeholders::_1, std::placeholders::_2));
             break;
         }
@@ -101,7 +101,7 @@ void Imu::imuRosQCB(const std::string& /*name*/, const std::shared_ptr<dai::ADat
 void Imu::imuDaiRosQCB(const std::string& /*name*/, const std::shared_ptr<dai::ADatatype>& data) {
     if(rclcpp::ok()) {
         auto imuData = std::dynamic_pointer_cast<dai::IMUData>(data);
-        std::deque<depthai_ros_msgs::msg::ImuWithMagneticField> deq;
+        std::deque<depthai_ros_msgs_v3::msg::ImuWithMagneticField> deq;
         imuConverter->toRosDaiMsg(imuData, deq);
         while(deq.size() > 0) {
             auto currMsg = deq.front();
@@ -113,7 +113,7 @@ void Imu::imuDaiRosQCB(const std::string& /*name*/, const std::shared_ptr<dai::A
 void Imu::imuMagQCB(const std::string& /*name*/, const std::shared_ptr<dai::ADatatype>& data) {
     if(rclcpp::ok()) {
         auto imuData = std::dynamic_pointer_cast<dai::IMUData>(data);
-        std::deque<depthai_ros_msgs::msg::ImuWithMagneticField> deq;
+        std::deque<depthai_ros_msgs_v3::msg::ImuWithMagneticField> deq;
         imuConverter->toRosDaiMsg(imuData, deq);
         while(deq.size() > 0) {
             auto currMsg = deq.front();

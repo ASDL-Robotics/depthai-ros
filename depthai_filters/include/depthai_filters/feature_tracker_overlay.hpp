@@ -1,7 +1,7 @@
 #pragma once
 
 #include "cv_bridge/cv_bridge.hpp"
-#include "depthai_ros_msgs/msg/tracked_features.hpp"
+#include "depthai_ros_msgs_v3/msg/tracked_features.hpp"
 #include "geometry_msgs/msg/point.hpp"
 #include "message_filters/subscriber.h"
 #include "message_filters/sync_policies/approximate_time.h"
@@ -16,19 +16,19 @@ class FeatureTrackerOverlay : public rclcpp::Node {
     explicit FeatureTrackerOverlay(const rclcpp::NodeOptions& options);
     void onInit();
 
-    void overlayCB(const sensor_msgs::msg::Image::ConstSharedPtr& img, const depthai_ros_msgs::msg::TrackedFeatures::ConstSharedPtr& detections);
+    void overlayCB(const sensor_msgs::msg::Image::ConstSharedPtr& img, const depthai_ros_msgs_v3::msg::TrackedFeatures::ConstSharedPtr& detections);
 
     message_filters::Subscriber<sensor_msgs::msg::Image> imgSub;
-    message_filters::Subscriber<depthai_ros_msgs::msg::TrackedFeatures> featureSub;
+    message_filters::Subscriber<depthai_ros_msgs_v3::msg::TrackedFeatures> featureSub;
 
-    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, depthai_ros_msgs::msg::TrackedFeatures> syncPolicy;
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, depthai_ros_msgs_v3::msg::TrackedFeatures> syncPolicy;
     std::unique_ptr<message_filters::Synchronizer<syncPolicy>> sync;
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr overlayPub;
 
     using featureIdType = decltype(geometry_msgs::msg::Point::x);
 
    private:
-    void trackFeaturePath(std::vector<depthai_ros_msgs::msg::TrackedFeature>& features);
+    void trackFeaturePath(std::vector<depthai_ros_msgs_v3::msg::TrackedFeature>& features);
 
     void drawFeatures(cv::Mat& img);
 

@@ -1,11 +1,11 @@
-#include "depthai_ros_driver/dai_nodes/sensors/sync.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sync.hpp"
 
 #include "depthai/pipeline/Pipeline.hpp"
 #include "depthai/pipeline/datatype/MessageGroup.hpp"
 #include "depthai/pipeline/node/Sync.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_helpers.hpp"
-#include "depthai_ros_driver/param_handlers/sync_param_handler.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_helpers.hpp"
+#include "depthai_ros_driver_v3/param_handlers/sync_param_handler.hpp"
 
 namespace depthai_ros_driver {
 namespace dai_nodes {

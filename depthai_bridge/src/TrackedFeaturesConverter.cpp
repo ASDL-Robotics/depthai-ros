@@ -7,14 +7,14 @@ TrackedFeaturesConverter::TrackedFeaturesConverter(std::string frameName, bool g
 
 TrackedFeaturesConverter::~TrackedFeaturesConverter() = default;
 
-void TrackedFeaturesConverter::toRosMsg(std::shared_ptr<dai::TrackedFeatures> inFeatures, std::deque<depthai_ros_msgs::msg::TrackedFeatures>& featureMsgs) {
-    depthai_ros_msgs::msg::TrackedFeatures msg;
+void TrackedFeaturesConverter::toRosMsg(std::shared_ptr<dai::TrackedFeatures> inFeatures, std::deque<depthai_ros_msgs_v3::msg::TrackedFeatures>& featureMsgs) {
+    depthai_ros_msgs_v3::msg::TrackedFeatures msg;
 
     msg.header = getRosHeader(inFeatures);
     msg.features.reserve(inFeatures->trackedFeatures.size());
 
     for(const auto& feature : inFeatures->trackedFeatures) {
-        depthai_ros_msgs::msg::TrackedFeature ft;
+        depthai_ros_msgs_v3::msg::TrackedFeature ft;
         ft.header = msg.header;
         ft.position.x = feature.position.x;
         ft.position.y = feature.position.y;

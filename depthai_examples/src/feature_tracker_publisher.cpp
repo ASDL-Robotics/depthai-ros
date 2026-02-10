@@ -9,7 +9,7 @@
 #include "depthai_bridge/TFPublisher.hpp"
 #include "depthai_bridge/TrackedFeaturesConverter.hpp"
 #include "depthai_bridge/depthaiUtility.hpp"
-#include "depthai_ros_msgs/msg/tracked_features.hpp"
+#include "depthai_ros_msgs_v3/msg/tracked_features.hpp"
 #include "rclcpp/node.hpp"
 
 int main(int argc, char** argv) {
@@ -76,7 +76,7 @@ int main(int argc, char** argv) {
     auto calibrationHandler = device->readCalibration();
     auto tfPub = std::make_unique<depthai_bridge::TFPublisher>(node, calibrationHandler, device->getConnectedCameraFeatures(), "oak", device->getDeviceName());
 
-    auto featuresPubL = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs::msg::TrackedFeatures, dai::TrackedFeatures>>(
+    auto featuresPubL = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs_v3::msg::TrackedFeatures, dai::TrackedFeatures>>(
         outputFeaturesLeftQueue,
         node,
         "features_left",
@@ -85,7 +85,7 @@ int main(int argc, char** argv) {
 
     featuresPubL->addPublisherCallback();
 
-    auto featuresPubR = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs::msg::TrackedFeatures, dai::TrackedFeatures>>(
+    auto featuresPubR = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs_v3::msg::TrackedFeatures, dai::TrackedFeatures>>(
         outputFeaturesRightQueue,
         node,
         "features_right",

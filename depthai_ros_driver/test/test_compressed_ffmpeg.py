@@ -16,7 +16,7 @@ from launch_ros.actions import ComposableNodeContainer
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.descriptions import ComposableNode
-from depthai_ros_driver.test_helper import TestHelper
+from depthai_ros_driver_v3.test_helper import TestHelper
 
 
 @pytest.mark.rostest
@@ -37,7 +37,7 @@ def generate_test_description():
         executable="component_container",
         composable_node_descriptions=[
             ComposableNode(
-                package="depthai_ros_driver",
+                package="depthai_ros_driver_v3",
                 plugin="depthai_ros_driver::Driver",
                 name=name,
                 parameters=[

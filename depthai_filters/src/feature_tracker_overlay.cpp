@@ -17,9 +17,9 @@ void FeatureTrackerOverlay::onInit() {
 }
 
 void FeatureTrackerOverlay::overlayCB(const sensor_msgs::msg::Image::ConstSharedPtr& img,
-                                      const depthai_ros_msgs::msg::TrackedFeatures::ConstSharedPtr& features) {
+                                      const depthai_ros_msgs_v3::msg::TrackedFeatures::ConstSharedPtr& features) {
     cv::Mat imgMat = utils::msgToMat(this->get_logger(), img, sensor_msgs::image_encodings::BGR8);
-    std::vector<depthai_ros_msgs::msg::TrackedFeature> f = features->features;
+    std::vector<depthai_ros_msgs_v3::msg::TrackedFeature> f = features->features;
     trackFeaturePath(f);
     drawFeatures(imgMat);
     sensor_msgs::msg::Image outMsg;
@@ -28,7 +28,7 @@ void FeatureTrackerOverlay::overlayCB(const sensor_msgs::msg::Image::ConstShared
     overlayPub->publish(outMsg);
 }
 
-void FeatureTrackerOverlay::trackFeaturePath(std::vector<depthai_ros_msgs::msg::TrackedFeature>& features) {
+void FeatureTrackerOverlay::trackFeaturePath(std::vector<depthai_ros_msgs_v3::msg::TrackedFeature>& features) {
     std::unordered_set<featureIdType> newTrackedIDs;
     for(auto& currentFeature : features) {
         auto currentID = currentFeature.id;

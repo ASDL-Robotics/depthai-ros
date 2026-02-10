@@ -81,7 +81,7 @@ TEST(ImuConverterTest, ToRosDaiMsg) {
     magReport.y = 12.0;
     magReport.z = 13.0;
     inData->packets[0].magneticField = magReport;
-    std::deque<depthai_ros_msgs::msg::ImuWithMagneticField> outImuMsgs;
+    std::deque<depthai_ros_msgs_v3::msg::ImuWithMagneticField> outImuMsgs;
     converter.toRosDaiMsg(inData, outImuMsgs);
 
     ASSERT_EQ(outImuMsgs.size(), 1);

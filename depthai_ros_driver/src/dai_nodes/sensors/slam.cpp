@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/slam.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/slam.hpp"
 
 #include "depthai/capabilities/ImgFrameCapability.hpp"
 #include "depthai/common/CameraBoardSocket.hpp"
@@ -12,12 +12,12 @@
 #include "depthai_bridge/GridMapConverter.hpp"
 #include "depthai_bridge/PointCloudConverter.hpp"
 #include "depthai_bridge/TransformDataConverter.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_wrapper.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/stereo.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/vio.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/param_handlers/slam_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/stereo.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/vio.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/slam_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "geometry_msgs/msg/pose_with_covariance_stamped.hpp"
 #include "geometry_msgs/msg/transform_stamped.hpp"
 #include "nav_msgs/msg/occupancy_grid.hpp"
@@ -74,7 +74,7 @@ Slam::Slam(const std::string& daiNodeName,
 
     triggerNewMapSrv = node->create_service<std_srvs::srv::Trigger>("~/" + getName() + "/trigger_new_map",
                                                                     std::bind(&Slam::triggerNewMapCB, this, std::placeholders::_1, std::placeholders::_2));
-    setLocalTransformSrv = node->create_service<depthai_ros_msgs::srv::SetLocalTransform>(
+    setLocalTransformSrv = node->create_service<depthai_ros_msgs_v3::srv::SetLocalTransform>(
         "~/" + getName() + "/set_local_transform", std::bind(&Slam::setLocalTransformCB, this, std::placeholders::_1, std::placeholders::_2));
     saveDatabaseSrv = node->create_service<std_srvs::srv::Trigger>("~/" + getName() + "/save_database",
                                                                    std::bind(&Slam::saveDatabaseCB, this, std::placeholders::_1, std::placeholders::_2));
@@ -249,8 +249,8 @@ void Slam::triggerNewMapCB(const std_srvs::srv::Trigger::Request::SharedPtr /*re
     res->success = true;
 }
 
-void Slam::setLocalTransformCB(const depthai_ros_msgs::srv::SetLocalTransform::Request::SharedPtr req,
-                               depthai_ros_msgs::srv::SetLocalTransform::Response::SharedPtr res) {
+void Slam::setLocalTransformCB(const depthai_ros_msgs_v3::srv::SetLocalTransform::Request::SharedPtr req,
+                               depthai_ros_msgs_v3::srv::SetLocalTransform::Response::SharedPtr res) {
     auto transform = std::make_shared<dai::TransformData>(req->local_transform.position.x,
                                                           req->local_transform.position.y,
                                                           req->local_transform.position.z,

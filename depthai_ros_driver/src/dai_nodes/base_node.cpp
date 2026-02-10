@@ -1,12 +1,12 @@
-#include "depthai_ros_driver/dai_nodes/base_node.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/base_node.hpp"
 
 #include "depthai/common/CameraBoardSocket.hpp"
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/Pipeline.hpp"
 #include "depthai_bridge/depthaiUtility.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_helpers.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_helpers.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {

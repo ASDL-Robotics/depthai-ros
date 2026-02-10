@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/param_handlers/sync_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/sync_param_handler.hpp"
 
 #include "depthai/pipeline/node/Sync.hpp"
 #include "rclcpp/node.hpp"

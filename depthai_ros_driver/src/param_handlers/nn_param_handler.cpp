@@ -1,10 +1,10 @@
-#include "depthai_ros_driver/param_handlers/nn_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/nn_param_handler.hpp"
 
 #include "depthai/common/CameraBoardSocket.hpp"
 #include "depthai/pipeline/node/DetectionNetwork.hpp"
 #include "depthai/pipeline/node/NeuralNetwork.hpp"
 #include "depthai/pipeline/node/SpatialDetectionNetwork.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "nlohmann/json.hpp"
 #include "rclcpp/node.hpp"
 

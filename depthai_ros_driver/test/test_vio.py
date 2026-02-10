@@ -13,7 +13,7 @@ from nav_msgs.msg import Odometry
 from sensor_msgs.msg import Imu
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from depthai_ros_driver.test_helper import TestHelper
+from depthai_ros_driver_v3.test_helper import TestHelper
 
 IS_RVC2 = os.getenv("DEPTHAI_PLATFORM") == "rvc2"
 
@@ -21,7 +21,7 @@ IS_RVC2 = os.getenv("DEPTHAI_PLATFORM") == "rvc2"
 @pytest.mark.rostest
 @unittest.skipUnless(IS_RVC2, reason="Test not supported on RVC4")
 def generate_test_description():
-    depthai_prefix = get_package_share_directory("depthai_ros_driver")
+    depthai_prefix = get_package_share_directory("depthai_ros_driver_v3")
     params_file = os.path.join(depthai_prefix, "config", "vio.yaml")
     rviz_config = os.path.join(depthai_prefix, "config", "rviz", "rgbd.rviz")
 

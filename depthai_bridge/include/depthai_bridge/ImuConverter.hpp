@@ -10,7 +10,7 @@
 #include "depthai/pipeline/datatype/IMUData.hpp"
 #include "depthai_bridge/BaseConverter.hpp"
 #include "depthai_bridge/depthaiUtility.hpp"
-#include "depthai_ros_msgs/msg/imu_with_magnetic_field.hpp"
+#include "depthai_ros_msgs_v3/msg/imu_with_magnetic_field.hpp"
 #include "rclcpp/time.hpp"
 #include "sensor_msgs/msg/imu.hpp"
 #include "sensor_msgs/msg/magnetic_field.hpp"
@@ -36,7 +36,7 @@ class ImuConverter : public BaseConverter {
     ~ImuConverter();
 
     void toRosMsg(std::shared_ptr<dai::IMUData> inData, std::deque<ImuMsgs::Imu>& outImuMsgs);
-    void toRosDaiMsg(std::shared_ptr<dai::IMUData> inData, std::deque<depthai_ros_msgs::msg::ImuWithMagneticField>& outImuMsgs);
+    void toRosDaiMsg(std::shared_ptr<dai::IMUData> inData, std::deque<depthai_ros_msgs_v3::msg::ImuWithMagneticField>& outImuMsgs);
 
     template <typename T>
     T lerp(const T& a, const T& b, const double t) {
@@ -131,10 +131,10 @@ class ImuConverter : public BaseConverter {
     void fillImuMsg(ImuMsgs::Imu& msg, dai::IMUReportRotationVectorWAcc report);
     void fillImuMsg(ImuMsgs::Imu& msg, dai::IMUReportMagneticField report);
 
-    void fillImuMsg(depthai_ros_msgs::msg::ImuWithMagneticField& msg, dai::IMUReportAccelerometer report);
-    void fillImuMsg(depthai_ros_msgs::msg::ImuWithMagneticField& msg, dai::IMUReportGyroscope report);
-    void fillImuMsg(depthai_ros_msgs::msg::ImuWithMagneticField& msg, dai::IMUReportRotationVectorWAcc report);
-    void fillImuMsg(depthai_ros_msgs::msg::ImuWithMagneticField& msg, dai::IMUReportMagneticField report);
+    void fillImuMsg(depthai_ros_msgs_v3::msg::ImuWithMagneticField& msg, dai::IMUReportAccelerometer report);
+    void fillImuMsg(depthai_ros_msgs_v3::msg::ImuWithMagneticField& msg, dai::IMUReportGyroscope report);
+    void fillImuMsg(depthai_ros_msgs_v3::msg::ImuWithMagneticField& msg, dai::IMUReportRotationVectorWAcc report);
+    void fillImuMsg(depthai_ros_msgs_v3::msg::ImuWithMagneticField& msg, dai::IMUReportMagneticField report);
 
     template <typename I, typename S, typename T, typename F, typename M>
     void CreateUnitMessage(M& msg, std::chrono::_V2::steady_clock::time_point timestamp, I first, S second, T third, F fourth) {

@@ -1,12 +1,12 @@
-#include "depthai_ros_driver/param_handlers/thermal_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/thermal_param_handler.hpp"
 
 #include <unordered_map>
 
 #include "depthai/common/CameraBoardSocket.hpp"
 #include "depthai/pipeline/datatype/ThermalConfig.hpp"
 #include "depthai/pipeline/node/Thermal.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {
