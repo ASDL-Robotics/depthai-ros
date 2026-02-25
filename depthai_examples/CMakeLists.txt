@@ -17,7 +17,7 @@ find_package(ament_cmake REQUIRED)
 
 find_package(camera_info_manager REQUIRED)
 find_package(cv_bridge REQUIRED)
-find_package(depthai CONFIG REQUIRED)
+find_package(depthai_v3 CONFIG REQUIRED)
 find_package(depthai_ros_msgs_v3 REQUIRED)
 find_package(depthai_bridge_v3 REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -44,7 +44,7 @@ include_directories(include ${ament_INCLUDE_DIRS})
 macro(add_example node_name node_src)
     add_executable("${node_name}" "${node_src}")
 
-    target_link_libraries("${node_name}" depthai::core opencv_imgproc
+    target_link_libraries("${node_name}" depthai_v3::core opencv_imgproc
                         opencv_highgui)
 
     target_link_libraries("${node_name}" ${dependencies})

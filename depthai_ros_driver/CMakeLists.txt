@@ -53,7 +53,7 @@ target_link_libraries(
   ${sensor_msgs_TARGETS}
   cv_bridge::cv_bridge
   depthai_bridge_v3::depthai_bridge_v3
-  depthai::core
+  depthai_v3::core
   image_transport::image_transport
   rclcpp::rclcpp
   diagnostic_updater::diagnostic_updater
@@ -84,7 +84,7 @@ target_link_libraries(
   ${sensor_msgs_TARGETS}
   image_transport::image_transport
   camera_info_manager::camera_info_manager
-  depthai::core
+  depthai_v3::core
   depthai_bridge_v3::depthai_bridge_v3
   rclcpp::rclcpp
   diagnostic_updater::diagnostic_updater
@@ -103,7 +103,7 @@ add_library(
 
 target_link_libraries(
   ${NN_LIB_NAME}
-  PUBLIC ${COMMON_LIB_NAME} depthai::core depthai_bridge_v3::depthai_bridge_v3
+  PUBLIC ${COMMON_LIB_NAME} depthai_v3::core depthai_bridge_v3::depthai_bridge_v3
   rclcpp::rclcpp ${vision_msgs_TARGETS})
 
 add_library(
@@ -117,7 +117,7 @@ target_link_libraries(
   ${NN_LIB_NAME}
   ${COMMON_LIB_NAME}
   rclcpp::rclcpp
-  depthai::core
+  depthai_v3::core
   ${rclcpp_components_TARGETS}
   ${std_srvs_TARGETS}
   ${pluginlib_TARGETS})
@@ -131,7 +131,7 @@ ament_export_include_directories(include)
 
 ament_export_targets(${PROJECT_NAME}Targets HAS_LIBRARY_TARGET)
 ament_export_libraries(${PROJECT_NAME})
-ament_export_dependencies(camera_info_manager cv_bridge depthai_bridge_v3 depthai
+ament_export_dependencies(camera_info_manager cv_bridge depthai_bridge_v3 depthai_v3
   diagnostic_updater std_srvs)
 
 install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})

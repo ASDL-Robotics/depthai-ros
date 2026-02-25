@@ -14,7 +14,7 @@ find_package(ament_index_cpp REQUIRED)
 find_package(camera_info_manager REQUIRED)
 find_package(cv_bridge REQUIRED)
 find_package(depthai_ros_msgs_v3 REQUIRED)
-find_package(depthai CONFIG REQUIRED)
+find_package(depthai_v3 CONFIG REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
@@ -88,7 +88,7 @@ target_link_libraries(
   tf2_geometry_msgs::tf2_geometry_msgs
   tf2_ros::static_transform_broadcaster_node
   tf2_ros::tf2_ros
-  depthai::core
+  depthai_v3::core
   opencv_imgproc
   opencv_highgui
   opencv_calib3d)
