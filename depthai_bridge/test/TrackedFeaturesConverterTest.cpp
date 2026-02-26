@@ -3,8 +3,8 @@
 #include <deque>
 
 #include "depthai_bridge/TrackedFeaturesConverter.hpp"
-#include "depthai_ros_msgs/msg/tracked_feature.hpp"
-#include "depthai_ros_msgs/msg/tracked_features.hpp"
+#include "depthai_ros_msgs_v3/msg/tracked_feature.hpp"
+#include "depthai_ros_msgs_v3/msg/tracked_features.hpp"
 
 namespace depthai_bridge {
 
@@ -20,7 +20,7 @@ TEST(TrackedFeaturesConverterTest, ToRosMsgTest) {
     feature.trackingError = 6.0f;
     inFeatures->trackedFeatures.push_back(feature);
 
-    std::deque<depthai_ros_msgs::msg::TrackedFeatures> featureMsgs;
+    std::deque<depthai_ros_msgs_v3::msg::TrackedFeatures> featureMsgs;
     converter.toRosMsg(inFeatures, featureMsgs);
 
     // Verify the output

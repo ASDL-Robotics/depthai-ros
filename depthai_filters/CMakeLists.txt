@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(
-  depthai_filters
-  VERSION 3.1.0
+  depthai_filters_v3
+  VERSION 3.1.1
   LANGUAGES CXX C)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -28,15 +28,15 @@ ament_auto_add_library(
   src/utils.cpp)
 target_link_libraries(${PROJECT_NAME} ${OpenCV_LIBRARIES})
 rclcpp_components_register_nodes(${PROJECT_NAME}
-  "${PROJECT_NAME}::Detection2DOverlay")
+  "depthai_filters::Detection2DOverlay")
 rclcpp_components_register_nodes(${PROJECT_NAME}
-  "${PROJECT_NAME}::SegmentationOverlay")
-rclcpp_components_register_nodes(${PROJECT_NAME} "${PROJECT_NAME}::WLSFilter")
-rclcpp_components_register_nodes(${PROJECT_NAME} "${PROJECT_NAME}::SpatialBB")
+  "depthai_filters::SegmentationOverlay")
+rclcpp_components_register_nodes(${PROJECT_NAME} "depthai_filters::WLSFilter")
+rclcpp_components_register_nodes(${PROJECT_NAME} "depthai_filters::SpatialBB")
 rclcpp_components_register_nodes(${PROJECT_NAME}
-  "${PROJECT_NAME}::FeatureTrackerOverlay")
-rclcpp_components_register_nodes(${PROJECT_NAME} "${PROJECT_NAME}::Features3D")
-rclcpp_components_register_nodes(${PROJECT_NAME} "${PROJECT_NAME}::ThermalTemp")
+  "depthai_filters::FeatureTrackerOverlay")
+rclcpp_components_register_nodes(${PROJECT_NAME} "depthai_filters::Features3D")
+rclcpp_components_register_nodes(${PROJECT_NAME} "depthai_filters::ThermalTemp")
 
 install(DIRECTORY launch config DESTINATION share/${PROJECT_NAME})
 install(
@@ -44,7 +44,7 @@ install(
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-ament_export_include_directories(include)
-install(DIRECTORY include/ DESTINATION include)
+install(DIRECTORY include/ DESTINATION include/${PROJECT_NAME})
+ament_export_include_directories(include/${PROJECT_NAME})
 
 ament_package()

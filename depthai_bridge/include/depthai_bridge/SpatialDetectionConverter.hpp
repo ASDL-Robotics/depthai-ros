@@ -6,13 +6,13 @@
 
 #include "depthai/pipeline/datatype/SpatialImgDetections.hpp"
 #include "depthai_bridge/BaseConverter.hpp"
-#include "depthai_ros_msgs/msg/spatial_detection_array.hpp"
+#include "depthai_ros_msgs_v3/msg/spatial_detection_array.hpp"
 #include "rclcpp/time.hpp"
 #include "vision_msgs/msg/detection3_d_array.hpp"
 
 namespace depthai_bridge {
 
-namespace SpatialMessages = depthai_ros_msgs::msg;
+namespace SpatialMessages = depthai_ros_msgs_v3::msg;
 using SpatialDetectionArrayPtr = SpatialMessages::SpatialDetectionArray::SharedPtr;
 
 class SpatialDetectionConverter : public BaseConverter {

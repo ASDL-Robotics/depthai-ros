@@ -24,12 +24,12 @@ from rcl_interfaces.msg import (
 import time
 from ament_index_python.packages import get_package_share_directory
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from depthai_ros_driver.test_helper import TestHelper
+from depthai_ros_driver_v3.test_helper import TestHelper
 
 
 @pytest.mark.rostest
 def generate_test_description():
-    depthai_prefix = get_package_share_directory("depthai_ros_driver")
+    depthai_prefix = get_package_share_directory("depthai_ros_driver_v3")
     params_file = os.path.join(depthai_prefix, "config", "driver.yaml")
     rviz_config = os.path.join(depthai_prefix, "config", "rviz", "rgbd.rviz")
 
@@ -157,7 +157,7 @@ class TestDriverLaunch(unittest.TestCase):
                 name="rgb.i_calibration_file",
                 value=ParameterValue(
                     type=4,
-                    string_value="package://depthai_ros_driver/config/calibration/rgb.yaml",
+                    string_value="package://depthai_ros_driver_v3/config/calibration/rgb.yaml",
                 ),
             )
         ]
@@ -165,7 +165,7 @@ class TestDriverLaunch(unittest.TestCase):
         value = self.testHelper.getParameter("rgb.i_calibration_file")
         self.assertEqual(
             value.string_value,
-            "package://depthai_ros_driver/config/calibration/rgb.yaml",
+            "package://depthai_ros_driver_v3/config/calibration/rgb.yaml",
         )
 
         def cb(msg):

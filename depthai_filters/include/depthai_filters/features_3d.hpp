@@ -1,6 +1,6 @@
 #pragma once
 
-#include "depthai_ros_msgs/msg/tracked_features.hpp"
+#include "depthai_ros_msgs_v3/msg/tracked_features.hpp"
 #include "message_filters/subscriber.h"
 #include "message_filters/sync_policies/approximate_time.h"
 #include "message_filters/synchronizer.h"
@@ -18,13 +18,13 @@ class Features3D : public rclcpp::Node {
 
     void overlayCB(const sensor_msgs::msg::Image::ConstSharedPtr& depth,
                    const sensor_msgs::msg::CameraInfo::ConstSharedPtr& info,
-                   const depthai_ros_msgs::msg::TrackedFeatures::ConstSharedPtr& features);
+                   const depthai_ros_msgs_v3::msg::TrackedFeatures::ConstSharedPtr& features);
 
     message_filters::Subscriber<sensor_msgs::msg::Image> depthSub;
-    message_filters::Subscriber<depthai_ros_msgs::msg::TrackedFeatures> featureSub;
+    message_filters::Subscriber<depthai_ros_msgs_v3::msg::TrackedFeatures> featureSub;
     message_filters::Subscriber<sensor_msgs::msg::CameraInfo> infoSub;
 
-    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, sensor_msgs::msg::CameraInfo, depthai_ros_msgs::msg::TrackedFeatures>
+    typedef message_filters::sync_policies::ApproximateTime<sensor_msgs::msg::Image, sensor_msgs::msg::CameraInfo, depthai_ros_msgs_v3::msg::TrackedFeatures>
         syncPolicy;
     std::unique_ptr<message_filters::Synchronizer<syncPolicy>> sync;
     rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr overlayPub;

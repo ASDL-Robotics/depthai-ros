@@ -1,12 +1,12 @@
-#include "depthai_ros_driver/param_handlers/stereo_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/stereo_param_handler.hpp"
 
 #include "depthai/common/CameraFeatures.hpp"
 #include "depthai/common/DeviceModelZoo.hpp"
 #include "depthai/pipeline/datatype/StereoDepthConfig.hpp"
 #include "depthai/pipeline/node/NeuralDepth.hpp"
 #include "depthai/pipeline/node/StereoDepth.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/logger.hpp"
 #include "rclcpp/node.hpp"
 

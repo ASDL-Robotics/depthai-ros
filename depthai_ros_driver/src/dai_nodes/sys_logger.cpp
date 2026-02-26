@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sys_logger.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sys_logger.hpp"
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/MessageQueue.hpp"

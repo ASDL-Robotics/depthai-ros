@@ -1,13 +1,13 @@
-#include "depthai_ros_driver/pipeline/base_pipeline.hpp"
+#include "depthai_ros_driver_v3/pipeline/base_pipeline.hpp"
 
 #include "depthai/device/Device.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/nn_wrapper.hpp"
-#include "depthai_ros_driver/dai_nodes/nn/spatial_nn_wrapper.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/imu.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/rgbd.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sensor_wrapper.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/stereo.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/tof.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/nn_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/nn/spatial_nn_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/imu.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/rgbd.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sensor_wrapper.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/stereo.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/tof.hpp"
 
 namespace depthai_ros_driver {
 

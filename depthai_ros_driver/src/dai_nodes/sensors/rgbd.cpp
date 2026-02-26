@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/rgbd.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/rgbd.hpp"
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/MessageQueue.hpp"
@@ -7,11 +7,11 @@
 #include "depthai/pipeline/node/ImageAlign.hpp"
 #include "depthai/pipeline/node/host/RGBD.hpp"
 #include "depthai_bridge/PointCloudConverter.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/stereo.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/tof.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/param_handlers/rgbd_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/stereo.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/tof.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/rgbd_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 

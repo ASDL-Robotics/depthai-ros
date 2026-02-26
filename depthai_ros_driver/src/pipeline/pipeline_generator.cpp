@@ -1,22 +1,22 @@
-#include "depthai_ros_driver/pipeline/pipeline_generator.hpp"
+#include "depthai_ros_driver_v3/pipeline/pipeline_generator.hpp"
 
 #include <stdexcept>
 
 #include "depthai/device/Device.hpp"
 #include "depthai/pipeline/Pipeline.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/sync.hpp"
-#include "depthai_ros_driver/dai_nodes/sys_logger.hpp"
-#include "depthai_ros_driver/param_handlers/pipeline_gen_param_handler.hpp"
-#include "depthai_ros_driver/pipeline/base_pipeline.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/sync.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sys_logger.hpp"
+#include "depthai_ros_driver_v3/param_handlers/pipeline_gen_param_handler.hpp"
+#include "depthai_ros_driver_v3/pipeline/base_pipeline.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "pluginlib/class_loader.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {
 namespace pipeline_gen {
 PipelineGenerator::PipelineGenerator()
-    : pipelineLoader(std::make_shared<pluginlib::ClassLoader<BasePipeline>>("depthai_ros_driver", "depthai_ros_driver::pipeline_gen::BasePipeline")) {
+    : pipelineLoader(std::make_shared<pluginlib::ClassLoader<BasePipeline>>("depthai_ros_driver_v3", "depthai_ros_driver::pipeline_gen::BasePipeline")) {
     pluginTypeMap = {{"RGB", "depthai_ros_driver::pipeline_gen::RGB"},
                      {"RGBD", "depthai_ros_driver::pipeline_gen::RGBD"},
                      {"RGBSTEREO", "depthai_ros_driver::pipeline_gen::RGBStereo"},

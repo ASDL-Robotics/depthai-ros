@@ -1,10 +1,10 @@
-#include "depthai_ros_driver/param_handlers/tof_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/tof_param_handler.hpp"
 
 #include "depthai/common/CameraBoardSocket.hpp"
 #include "depthai/pipeline/datatype/ToFConfig.hpp"
 #include "depthai/pipeline/node/ToF.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {

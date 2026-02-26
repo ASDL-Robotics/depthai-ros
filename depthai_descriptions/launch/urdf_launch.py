@@ -10,7 +10,7 @@ from launch_ros.descriptions import ComposableNode
 
 
 def launch_setup(context, *args, **kwargs):
-    bringup_dir = get_package_share_directory("depthai_descriptions")
+    bringup_dir = get_package_share_directory("depthai_descriptions_v3")
     use_base_descr = LaunchConfiguration("use_base_descr", default="false")
     xacro_path = ""
     if use_base_descr.perform(context) == "true":

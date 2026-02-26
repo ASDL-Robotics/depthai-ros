@@ -184,7 +184,7 @@ geometry_msgs::msg::Quaternion TFPublisher::quatFromRotM(std::vector<std::vector
 }
 
 bool TFPublisher::modelNameAvailable() {
-    std::filesystem::path path = std::filesystem::path(ament_index_cpp::get_package_share_directory("depthai_descriptions")) / "urdf" / "models";
+    std::filesystem::path path = std::filesystem::path(ament_index_cpp::get_package_share_directory("depthai_descriptions_v3")) / "urdf" / "models";
     convertModelName();
     try {
         for(const auto& entry : std::filesystem::directory_iterator(path)) {
@@ -253,7 +253,7 @@ std::string TFPublisher::getURDF() {
         args = customXacroArgs;
     }
     if(customURDFLocation.empty()) {
-        path = ament_index_cpp::get_package_share_directory("depthai_descriptions") + "/urdf/base_descr.urdf.xacro ";
+        path = ament_index_cpp::get_package_share_directory("depthai_descriptions_v3") + "/urdf/base_descr.urdf.xacro ";
     } else {
         path = customURDFLocation + " ";
     }

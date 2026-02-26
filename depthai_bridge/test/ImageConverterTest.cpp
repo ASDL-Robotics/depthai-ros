@@ -196,7 +196,7 @@ TEST_F(ImageConverterTest, RosMsgtoCvMatTest) {
 
 TEST_F(ImageConverterTest, CalibrationToCameraInfoTest) {
     ImageConverter converter("test_frame", true, false);
-    std::ifstream f(ament_index_cpp::get_package_share_directory("depthai_bridge") + "/resources/cal.json");
+    std::ifstream f(ament_index_cpp::get_package_share_directory("depthai_bridge_v3") + "/resources/cal.json");
     nlohmann::json data = nlohmann::json::parse(f);
     dai::CalibrationHandler calibHandler = dai::CalibrationHandler::fromJson(data);
     dai::CameraBoardSocket cameraId = dai::CameraBoardSocket::CAM_A;

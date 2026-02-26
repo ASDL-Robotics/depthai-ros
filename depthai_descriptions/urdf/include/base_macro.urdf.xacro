@@ -10,13 +10,13 @@
 		<xacro:if value="${simulation}">
 			<xacro:property
 				name="file_prefix"
-				value="file://$(find depthai_descriptions)"
+				value="file://$(find depthai_descriptions_v3)"
 			/>
 		</xacro:if>
 		<xacro:unless value="${simulation}">
 			<xacro:property
 				name="file_prefix"
-				value="package://depthai_descriptions"
+				value="package://depthai_descriptions_v3"
 			/>
 		</xacro:unless>
 

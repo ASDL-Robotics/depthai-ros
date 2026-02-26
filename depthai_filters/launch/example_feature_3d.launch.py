@@ -11,7 +11,7 @@ from launch_ros.descriptions import ComposableNode
 
 def launch_setup(context, *args, **kwargs):
     params_file = LaunchConfiguration("params_file")
-    depthai_prefix = get_package_share_directory("depthai_ros_driver")
+    depthai_prefix = get_package_share_directory("depthai_ros_driver_v3")
     name = LaunchConfiguration('name').perform(context)
     
     return [
@@ -25,7 +25,7 @@ def launch_setup(context, *args, **kwargs):
             target_container=name+"_container",
             composable_node_descriptions=[
                     ComposableNode(
-                        package="depthai_filters",
+                        package="depthai_filters_v3",
                         name="feature_overlay",
                         plugin="depthai_filters::Features3D",
                         remappings=[('stereo/image_raw', name+'/stereo/image_raw'),
@@ -39,7 +39,7 @@ def launch_setup(context, *args, **kwargs):
 
 
 def generate_launch_description():
-    depthai_filters_prefix = get_package_share_directory("depthai_filters")
+    depthai_filters_prefix = get_package_share_directory("depthai_filters_v3")
 
     declared_arguments = [
         DeclareLaunchArgument("name", default_value="oak"),

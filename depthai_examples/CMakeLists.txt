@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10.2) # CMake version in Ubuntu 18.04 LTS
 project(
-  depthai_examples
-  VERSION 3.1.0
+  depthai_examples_v3
+  VERSION 3.1.1
   LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -17,9 +17,9 @@ find_package(ament_cmake REQUIRED)
 
 find_package(camera_info_manager REQUIRED)
 find_package(cv_bridge REQUIRED)
-find_package(depthai CONFIG REQUIRED)
-find_package(depthai_ros_msgs REQUIRED)
-find_package(depthai_bridge REQUIRED)
+find_package(depthai_v3 CONFIG REQUIRED)
+find_package(depthai_ros_msgs_v3 REQUIRED)
+find_package(depthai_bridge_v3 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -31,8 +31,8 @@ find_package(backward_ros REQUIRED)
 set(dependencies
     ${camera_info_manager_TARGETS}
     ${cv_bridge_TARGETS}
-    ${depthai_ros_msgs_TARGETS}
-    ${depthai_bridge_TARGETS}
+    ${depthai_ros_msgs_v3_TARGETS}
+    ${depthai_bridge_v3_TARGETS}
     rclcpp::rclcpp
     ${sensor_msgs_TARGETS}
     ${stereo_msgs_TARGETS}
@@ -44,7 +44,7 @@ include_directories(include ${ament_INCLUDE_DIRS})
 macro(add_example node_name node_src)
     add_executable("${node_name}" "${node_src}")
 
-    target_link_libraries("${node_name}" depthai::core opencv_imgproc
+    target_link_libraries("${node_name}" depthai_v3::core opencv_imgproc
                         opencv_highgui)
 
     target_link_libraries("${node_name}" ${dependencies})

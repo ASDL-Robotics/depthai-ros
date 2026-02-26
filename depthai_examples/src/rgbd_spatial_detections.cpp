@@ -17,7 +17,7 @@
 #include "depthai_bridge/PointCloudConverter.hpp"
 #include "depthai_bridge/SpatialDetectionConverter.hpp"
 #include "depthai_bridge/TFPublisher.hpp"
-#include "depthai_ros_msgs/msg/spatial_detection_array.hpp"
+#include "depthai_ros_msgs_v3/msg/spatial_detection_array.hpp"
 #include "rclcpp/logging.hpp"
 #include "rclcpp/node.hpp"
 #include "sensor_msgs/msg/image.hpp"
@@ -259,7 +259,7 @@ int main(int argc, char** argv) {
 
         auto detConverter = std::make_shared<depthai_bridge::SpatialDetectionConverter>(
             depthai_bridge::getOpticalFrameName(tfPrefix, depthai_bridge::getSocketName(dai::CameraBoardSocket::CAM_A, device->getDeviceName())), false);
-        auto detectionPublish = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs::msg::SpatialDetectionArray, dai::SpatialImgDetections>>(
+        auto detectionPublish = std::make_unique<depthai_bridge::BridgePublisher<depthai_ros_msgs_v3::msg::SpatialDetectionArray, dai::SpatialImgDetections>>(
             detectionQueue,
             node,
             "rgb/spatial_detections",

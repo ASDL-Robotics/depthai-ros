@@ -1,4 +1,4 @@
-#include "depthai_ros_driver/dai_nodes/sensors/tof.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/tof.hpp"
 
 #include <depthai/common/CameraBoardSocket.hpp>
 #include <stdexcept>
@@ -7,10 +7,10 @@
 #include "depthai/pipeline/Pipeline.hpp"
 #include "depthai/pipeline/node/ImageAlign.hpp"
 #include "depthai/pipeline/node/ToF.hpp"
-#include "depthai_ros_driver/dai_nodes/sensors/img_pub.hpp"
-#include "depthai_ros_driver/param_handlers/base_param_handler.hpp"
-#include "depthai_ros_driver/param_handlers/tof_param_handler.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/dai_nodes/sensors/img_pub.hpp"
+#include "depthai_ros_driver_v3/param_handlers/base_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/tof_param_handler.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/node.hpp"
 
 namespace depthai_ros_driver {

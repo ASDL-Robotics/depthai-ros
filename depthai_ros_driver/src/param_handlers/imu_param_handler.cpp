@@ -1,8 +1,8 @@
-#include "depthai_ros_driver/param_handlers/imu_param_handler.hpp"
+#include "depthai_ros_driver_v3/param_handlers/imu_param_handler.hpp"
 
 #include "depthai/pipeline/node/IMU.hpp"
 #include "depthai_bridge/ImuConverter.hpp"
-#include "depthai_ros_driver/utils.hpp"
+#include "depthai_ros_driver_v3/utils.hpp"
 #include "rclcpp/logger.hpp"
 #include "rclcpp/node.hpp"
 

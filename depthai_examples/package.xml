@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="3">
-    <name>depthai_examples</name>
-    <version>3.1.0</version>
-    <description>The depthai_examples package</description>
+    <name>depthai_examples_v3</name>
+    <version>3.1.1</version>
+    <description>The depthai_examples_v3 package</description>
 
     <author>Adam Serafin</author>
     <author>Sachin Guruswamy</author>
@@ -17,10 +17,10 @@
     <depend>backward_ros</depend>
     <depend>camera_info_manager</depend>
     <depend>cv_bridge</depend>
-    <depend>depthai</depend>
-    <depend>depthai_bridge</depend>
-    <depend>depthai_descriptions</depend>
-    <depend>depthai_ros_msgs</depend>
+    <depend>depthai_v3</depend>
+    <depend>depthai_bridge_v3</depend>
+    <depend>depthai_descriptions_v3</depend>
+    <depend>depthai_ros_msgs_v3</depend>
     <depend>foxglove_msgs</depend>
     <depend>image_transport</depend>
     <depend>libopencv-dev</depend>
