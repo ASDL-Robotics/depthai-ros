@@ -7,7 +7,8 @@ TrackDetectionConverter::TrackDetectionConverter(std::string frameName, int widt
 
 TrackDetectionConverter::~TrackDetectionConverter() = default;
 
-void TrackDetectionConverter::toRosMsg(std::shared_ptr<dai::Tracklets> trackData, std::deque<depthai_ros_msgs_v3::msg::TrackDetection2DArray>& opDetectionMsgs) {
+void TrackDetectionConverter::toRosMsg(std::shared_ptr<dai::Tracklets> trackData,
+                                       std::deque<depthai_ros_msgs_v3::msg::TrackDetection2DArray>& opDetectionMsgs) {
     depthai_ros_msgs_v3::msg::TrackDetection2DArray opDetectionMsg;
     opDetectionMsg.header = getRosHeader(trackData);
     opDetectionMsg.detections.resize(trackData->tracklets.size());

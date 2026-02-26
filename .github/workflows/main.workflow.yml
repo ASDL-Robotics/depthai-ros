@@ -24,7 +24,7 @@ on:
       - jazzy
       - kilted
 env:
-  ROS_DISTRO: kilted
+  ROS_DISTRO: jazzy
 
 jobs:
   clang-format-lint:
@@ -45,11 +45,11 @@ jobs:
         linter: clang_format
         arguments: --config ./.clang-format
         package-name: |
-          depthai_bridge
-          depthai_examples
-          depthai_ros_msgs
-          depthai_ros_driver
-          depthai_ros
+          depthai_bridge_v3
+          depthai_examples_v3
+          depthai_ros_msgs_v3
+          depthai_ros_driver_v3
+          depthai-ros-v3
   linting:
     name: ament_${{ matrix.linter }}
     runs-on: ubuntu-24.04
@@ -69,10 +69,10 @@ jobs:
         distribution: ${{ env.ROS_DISTRO }}
         linter: ${{ matrix.linter }}
         package-name: |
-          depthai_bridge
-          depthai_examples
-          depthai_ros_msgs
-          depthai_ros
+          depthai_bridge_v3
+          depthai_examples_v3
+          depthai_ros_msgs_v3
+          depthai-ros-v3
 
   docker-build-amd:
     name: Build and Upload to Docker Hub
