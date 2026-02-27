@@ -29,9 +29,7 @@ env:
 jobs:
   clang-format-lint:
     name: ament_clang_format
-    runs-on: ubuntu-24.04
-    container:
-      image: ubuntu:noble
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
     steps:
@@ -52,9 +50,7 @@ jobs:
           depthai-ros-v3
   linting:
     name: ament_${{ matrix.linter }}
-    runs-on: ubuntu-24.04
-    container:
-      image: ubuntu:noble
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false 
       matrix:
