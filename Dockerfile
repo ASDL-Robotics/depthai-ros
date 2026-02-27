@@ -1,9 +1,9 @@
-ARG ROS_DISTRO=jazzy
+ARG ROS_DISTRO=humble
 FROM ros:${ROS_DISTRO}-ros-base
 ARG USE_RVIZ
 ARG BUILD_SEQUENTIAL=0
 ARG BUILD_TESTS=0
-ARG DEPTHAI_CORE_REF=v3.2.2-jazzy.1
+ARG DEPTHAI_CORE_REF=v3.2.2-humble.1
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
    && apt-get -y install --no-install-recommends software-properties-common git libusb-1.0-0-dev wget zsh python3-colcon-common-extensions zip unzip tar

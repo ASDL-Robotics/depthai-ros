@@ -7,6 +7,7 @@
 #include "depthai_bridge/TFPublisher.hpp"
 #include "depthai_ros_driver_v3/pipeline/pipeline_generator.hpp"
 #include "diagnostic_msgs/msg/diagnostic_array.hpp"
+#include "rmw/qos_profiles.h"
 
 namespace depthai_ros_driver {
 
@@ -22,13 +23,17 @@ Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", opti
 
             paramCBHandle = this->add_on_set_parameters_callback(std::bind(&Driver::parameterCB, this, std::placeholders::_1));
             startSrv = this->create_service<Trigger>(
-                "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+                "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, srvGroup);
             stopSrv = this->create_service<Trigger>(
-                "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-            savePipelineSrv = this->create_service<Trigger>(
-                "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-            saveCalibSrv = this->create_service<Trigger>(
-                "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+                "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default, srvGroup);
+            savePipelineSrv = this->create_service<Trigger>("~/save_pipeline",
+                                                            std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2),
+                                                            rmw_qos_profile_services_default,
+                                                            srvGroup);
+            saveCalibSrv = this->create_service<Trigger>("~/save_calibration",
+                                                         std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2),
+                                                         rmw_qos_profile_services_default,
+                                                         srvGroup);
 
             diagSub =
                 this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
