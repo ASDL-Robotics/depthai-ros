@@ -212,10 +212,12 @@ void ImagePublisher::publish(std::shared_ptr<Image> img) {
         }
         infoPub->publish(std::move(img->info));
     } else {
-        if(ipcEnabled) {
-            if(!pubConfig.lazyPub || imgPubIT.getNumSubscribers() > 0) imgPubIT.publish(std::move(img->image), std::move(img->info));
-        } else {
-            if(!pubConfig.lazyPub || imgPubIT.getNumSubscribers() > 0) imgPubIT.publish(*img->image, *img->info);
+        if(!pubConfig.lazyPub || imgPubIT.getNumSubscribers() > 0) {
+            if(ipcEnabled) {
+                imgPubIT.publish(std::move(img->image), std::move(img->info));
+            } else {
+                imgPubIT.publish(*img->image, *img->info);
+            }
         }
     }
 }
