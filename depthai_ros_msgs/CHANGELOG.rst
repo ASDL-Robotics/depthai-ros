@@ -2,6 +2,11 @@
 Changelog for package depthai_ros_msgs_v3
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.2 (2026-05-05)
+------------------
+* Require DepthAI 3.6.1 packages.
+* Update release preparation defaults for DepthAI 3.6.1.
+
 2.5.3 (2022-08-21)
 -----------
 * Updated release version

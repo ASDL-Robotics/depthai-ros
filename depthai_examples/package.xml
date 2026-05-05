@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
     <name>depthai_examples_v3</name>
-    <version>3.1.1</version>
+    <version>3.1.2</version>
     <description>The depthai_examples_v3 package</description>
 
     <author>Adam Serafin</author>
@@ -17,7 +17,7 @@
     <depend>backward_ros</depend>
     <depend>camera_info_manager</depend>
     <depend>cv_bridge</depend>
-    <depend>depthai_v3</depend>
+    <depend version_gte="3.6.1">depthai_v3</depend>
     <depend>depthai_bridge_v3</depend>
     <depend>depthai_descriptions_v3</depend>
     <depend>depthai_ros_msgs_v3</depend>
