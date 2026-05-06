@@ -2,6 +2,10 @@
 Changelog for package depthai-ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.2.0 (2026-05-06)
+------------------
+* Expose pipeline auto calibration mode through the ROS driver.
+
 3.1.2 (2026-05-05)
 ------------------
 * Require DepthAI 3.6.1 packages.
