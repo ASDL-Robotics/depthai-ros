@@ -101,7 +101,7 @@ jobs:
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
             BUILD_SEQUENTIAL=1
-            DEPTHAI_CORE_REF=v3.2.2-humble.1
+            DEPTHAI_CORE_REF=ros-v3.6.1-humble.2
           no-cache: true
 
       - name: Build and Push
@@ -111,7 +111,7 @@ jobs:
           build-args: |
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
-            DEPTHAI_CORE_REF=v3.2.2-humble.1
+            DEPTHAI_CORE_REF=ros-v3.6.1-humble.2
           push: ${{ env.PUSH }}
           no-cache: true
           tags: | 
@@ -149,7 +149,7 @@ jobs:
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
             BUILD_SEQUENTIAL=1
-            DEPTHAI_CORE_REF=v3.2.2-humble.1
+            DEPTHAI_CORE_REF=ros-v3.6.1-humble.2
           no-cache: true
 
       - name: Build and Push
@@ -159,7 +159,7 @@ jobs:
           build-args: |
             ROS_DISTRO=${{ env.ROS_DISTRO }}
             USE_RVIZ=1
-            DEPTHAI_CORE_REF=v3.2.2-humble.1
+            DEPTHAI_CORE_REF=ros-v3.6.1-humble.2
           push: ${{ env.PUSH }}
           no-cache: true
           tags: | 
