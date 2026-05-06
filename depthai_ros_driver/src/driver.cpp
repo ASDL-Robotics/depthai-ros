@@ -234,26 +234,26 @@ void Driver::startDevice() {
                 for(const auto& info : availableDevices) {
                     if(!deviceId.empty() && info.getDeviceId() == deviceId) {
                         RCLCPP_INFO(get_logger(), "Connecting to the device using ID: %s", deviceId.c_str());
-                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER) {
+                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER || info.state == X_LINK_GATE) {
                             device = std::make_shared<dai::Device>(info, speed);
                             camRunning = true;
-                        } else if(info.state == X_LINK_BOOTED) {
+                        } else if(info.state == X_LINK_BOOTED || info.state == X_LINK_GATE_BOOTED) {
                             throw std::runtime_error("Device is already booted in different process.");
                         }
                     } else if(!ip.empty() && info.name == ip) {
                         RCLCPP_INFO(get_logger(), "Connecting to the device using ip: %s", ip.c_str());
-                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER) {
+                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER || info.state == X_LINK_GATE) {
                             device = std::make_shared<dai::Device>(info);
                             camRunning = true;
-                        } else if(info.state == X_LINK_BOOTED) {
+                        } else if(info.state == X_LINK_BOOTED || info.state == X_LINK_GATE_BOOTED) {
                             throw std::runtime_error("Device is already booted in different process...");
                         }
                     } else if(!usb_id.empty() && info.name == usb_id) {
                         RCLCPP_INFO(get_logger(), "Connecting to the device using USB ID: %s", usb_id.c_str());
-                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER) {
+                        if(info.state == X_LINK_UNBOOTED || info.state == X_LINK_BOOTLOADER || info.state == X_LINK_GATE) {
                             device = std::make_shared<dai::Device>(info, speed);
                             camRunning = true;
-                        } else if(info.state == X_LINK_BOOTED) {
+                        } else if(info.state == X_LINK_BOOTED || info.state == X_LINK_GATE_BOOTED) {
                             throw std::runtime_error("Device is already booted in different process.");
                         }
                     } else {

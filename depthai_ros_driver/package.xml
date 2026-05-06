@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package format="3">
   <name>depthai_ros_driver</name>
-  <version>3.1.0</version>
+  <version>3.1.2</version>
   <description>Depthai ROS Monolithic node.</description>
   <author>Adam Serafin</author>
   <!-- temporary -->
@@ -28,7 +28,7 @@
   <depend>image_transport</depend>
   <depend>image_transport_plugins</depend>
   <depend>image_pipeline</depend>
-  <depend>depthai</depend>
+  <depend version_gte="3.6.1">depthai</depend>
   <depend>depthai_bridge</depend>
   <depend>depthai_descriptions</depend>
   <depend>depthai_ros_msgs</depend>

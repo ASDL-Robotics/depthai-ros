@@ -2,6 +2,11 @@
 Changelog for package depthai_examples
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.1.2 (2026-05-05)
+------------------
+* Require DepthAI 3.6.1 packages.
+* Update release preparation defaults for DepthAI 3.6.1.
+
 2.5.3 (2022-08-21)
 -----------
 * Updated release version
@@ -22,5 +27,4 @@ Changelog for package depthai_examples
 * Release 2.5.0
 * add ament package:
 * created Bridge and Coverters to handle images, IMU and camera Info
-
 
