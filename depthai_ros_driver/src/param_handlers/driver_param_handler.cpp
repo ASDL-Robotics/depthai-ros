@@ -31,6 +31,7 @@ void DriverParamHandler::declareParams() {
     declareAndLogParam<bool>("i_pipeline_dump", false);
     declareAndLogParam<bool>("i_calibration_dump", false);
     declareAndLogParam<std::string>("i_external_calibration_path", "");
+    declareAndLogParam<std::string>("i_pipeline_auto_calibration_mode", "");
     declareAndLogParam<float>("r_laser_dot_intensity", 0.6, getRangedFloatDescriptor(0.0, 1.0));
     declareAndLogParam<float>("r_floodlight_intensity", 0.6, getRangedFloatDescriptor(0.0, 1.0));
     declareAndLogParam<bool>("i_restart_on_diagnostics_error", false);
