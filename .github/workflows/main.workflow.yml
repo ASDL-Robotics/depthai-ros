@@ -49,7 +49,7 @@ jobs:
           depthai_examples_v3
           depthai_ros_msgs_v3
           depthai_ros_driver_v3
-          depthai-ros-v3
+          depthai_ros_v3
   linting:
     name: ament_${{ matrix.linter }}
     runs-on: ubuntu-24.04
@@ -72,7 +72,7 @@ jobs:
           depthai_bridge_v3
           depthai_examples_v3
           depthai_ros_msgs_v3
-          depthai-ros-v3
+          depthai_ros_v3
 
   docker-build-amd:
     name: Build and Upload to Docker Hub

@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(depthai_ros_driver_v3 VERSION 3.1.1)
+project(depthai_ros_driver_v3 VERSION 3.1.2)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 set(CMAKE_BUILD_SHARED_LIBS ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
