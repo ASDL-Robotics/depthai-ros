@@ -2,6 +2,10 @@
 Changelog for package depthai-ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.2.1 (2026-05-15)
+------------------
+* Add support for RVC4 IMU magnetometer and rotation vector data.
+
 3.2.0 (2026-05-06)
 ------------------
 * Expose pipeline auto calibration mode through the ROS driver.
@@ -268,4 +272,3 @@ Changelog for package depthai-ros
 * Release 2.5.0
 * add ament package:
 * created Bridge and Coverters to handle images, IMU and camera Info
-
