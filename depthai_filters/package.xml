@@ -4,8 +4,7 @@
   <version>3.2.1</version>
   <description>Depthai filters package</description>
   <author>Adam Serafin</author>
-  <!-- temporary -->
-  <maintainer email="matevz.morato@luxonis.com">Matevz Morato</maintainer>
+  <maintainer email="sebastjan.ahtik@luxonis.com">Aljaž Sebastjan Ahtik</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
