@@ -7,8 +7,7 @@
     <author>Sachin Guruswamy</author>
     <author>Adam Serafin</author>
 
-    <!-- temporary -->
-    <maintainer email="matevz.morato@luxonis.com">Matevz Morato</maintainer>
+    <maintainer email="sebastjan.ahtik@luxonis.com">Aljaž Sebastjan Ahtik</maintainer>
 
     <license>MIT</license>
 
@@ -20,7 +19,7 @@
     <test_depend>ament_cmake_gtest</test_depend>
     <depend>cv_bridge</depend>
     <depend>camera_info_manager</depend>
-    <depend version_gte="3.6.1">depthai_v3</depend>
+    <depend version_gte="3.7.1">depthai_v3</depend>
     <depend>depthai_ros_msgs_v3</depend>
     <depend>image_transport</depend>
     <depend>libopencv-dev</depend>

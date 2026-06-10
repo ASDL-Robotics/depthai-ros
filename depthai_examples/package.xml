@@ -7,8 +7,7 @@
     <author>Adam Serafin</author>
     <author>Sachin Guruswamy</author>
 
-    <!-- temporary -->
-    <maintainer email="matevz.morato@luxonis.com">Matevz Morato</maintainer>
+    <maintainer email="sebastjan.ahtik@luxonis.com">Aljaž Sebastjan Ahtik</maintainer>
 
     <license>MIT</license>
 
@@ -17,7 +16,7 @@
     <depend>backward_ros</depend>
     <depend>camera_info_manager</depend>
     <depend>cv_bridge</depend>
-    <depend version_gte="3.6.1">depthai_v3</depend>
+    <depend version_gte="3.7.1">depthai_v3</depend>
     <depend>depthai_bridge_v3</depend>
     <depend>depthai_descriptions_v3</depend>
     <depend>depthai_ros_msgs_v3</depend>
