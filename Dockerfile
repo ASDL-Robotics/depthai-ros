@@ -1,8 +1,9 @@
-ARG ROS_DISTRO=jazzy
+ARG ROS_DISTRO=humble
 FROM ros:${ROS_DISTRO}-ros-base
 ARG USE_RVIZ
 ARG BUILD_SEQUENTIAL=0
 ARG BUILD_TESTS=0
+ARG DEPTHAI_CORE_REF=ros-old-v3.7.1-1
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
    && apt-get -y install --no-install-recommends software-properties-common git libusb-1.0-0-dev wget zsh python3-colcon-common-extensions zip unzip tar
@@ -14,7 +15,7 @@ RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 ENV WS=/ws
 RUN mkdir -p $WS/src
 COPY ./ $WS/src/depthai-ros
-RUN cd .${WS}/src && git clone --branch v3_jazzy --single-branch https://github.com/luxonis/depthai-core.git && cd depthai-core && git submodule update --init --recursive
+RUN cd .${WS}/src && git clone --branch $DEPTHAI_CORE_REF --single-branch https://github.com/luxonis/depthai-core.git && cd depthai-core && git submodule update --init --recursive
 RUN cd $WS/ && rosdep install --from-paths src --ignore-src  -y
 
 RUN cd $WS/ && . /opt/ros/${ROS_DISTRO}/setup.sh && ./src/depthai-ros/build.sh -s $BUILD_SEQUENTIAL -r 1 -m 1 -t $BUILD_TESTS

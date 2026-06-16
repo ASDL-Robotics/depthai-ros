@@ -26,10 +26,19 @@ Driver::Driver(const rclcpp::NodeOptions& options) : rclcpp::Node("driver", opti
                 "~/start_driver", std::bind(&Driver::startCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
             stopSrv = this->create_service<Trigger>(
                 "~/stop_driver", std::bind(&Driver::stopCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-            savePipelineSrv = this->create_service<Trigger>(
-                "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
-            saveCalibSrv = this->create_service<Trigger>(
-                "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            // savePipelineSrv = this->create_service<Trigger>(
+            //     "~/save_pipeline", std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            // saveCalibSrv = this->create_service<Trigger>(
+            //     "~/save_calibration", std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2), rclcpp::ServicesQoS(), srvGroup);
+            // Kepp the old version for compatibility with both humble and jazzy 
+            savePipelineSrv = this->create_service<Trigger>("~/save_pipeline",
+                                                            std::bind(&Driver::savePipelineCB, this, std::placeholders::_1, std::placeholders::_2),
+                                                            rmw_qos_profile_services_default,
+                                                            srvGroup);
+            saveCalibSrv = this->create_service<Trigger>("~/save_calibration",
+                                                         std::bind(&Driver::saveCalibCB, this, std::placeholders::_1, std::placeholders::_2),
+                                                         rmw_qos_profile_services_default,
+                                                         srvGroup);
 
             diagSub =
                 this->create_subscription<diagnostic_msgs::msg::DiagnosticArray>("/diagnostics", 10, std::bind(&Driver::diagCB, this, std::placeholders::_1));
