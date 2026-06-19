@@ -1,0 +1,82 @@
+/**:
+  ros__parameters:
+    driver:
+      i_enable_ir: false
+      r_laser_dot_intensity: 0.3
+      r_floodlight_intensity: 0.2
+
+    pipeline_gen:
+      i_pipeline_type: RGBD
+      i_nn_type: none
+      i_enable_rgbd: true
+      # Publishes chip/system telemetry on /diagnostics for RVC2 devices.
+      i_enable_diagnostics: true
+
+    rgb:
+      i_width: 1280
+      i_height: 720
+      i_fps: 30.0
+      r_set_man_exposure: true
+      r_exposure: 8000
+      r_iso: 400
+      r_set_man_focus: true
+      r_focus: 130
+      r_set_man_whitebalance: true
+      r_whitebalance: 4500
+      r_set_auto_exp_region: false
+      r_auto_exp_region_start_x: 320
+      r_auto_exp_region_start_y: 180
+      r_auto_exp_region_width: 640
+      r_auto_exp_region_height: 360
+      # Timestamp offset only, not exposure compensation.
+      i_add_exposure_offset: false
+      i_exposure_offset: 0
+
+    stereo:
+      i_depth_preset: DEFAULT
+      i_width: 640
+      i_height: 400
+      i_fps: 30.0
+      i_lr_check: true
+      i_lrc_threshold: 10
+      i_subpixel: true
+      i_subpixel_fractional_bits: 3
+      i_extended_disp: false
+      # Leave at 0.0 to use calibration-derived focal length.
+      i_focal_length: 0.0
+      i_stereo_conf_threshold: 15
+      i_bilateral_sigma: 0
+      i_enable_spatial_filter: true
+      i_spatial_filter_hole_filling_radius: 2
+      i_spatial_filter_alpha: 0.5
+      i_spatial_filter_delta: 20
+      i_spatial_filter_iterations: 1
+      i_enable_temporal_filter: true
+      i_temporal_filter_alpha: 0.4
+      i_temporal_filter_delta: 20
+      i_temporal_filter_persistency: VALID_2_IN_LAST_4
+      i_enable_threshold_filter: true
+      i_threshold_filter_min_range: 100
+      i_threshold_filter_max_range: 15000
+      i_add_exposure_offset: false
+      i_exposure_offset: 0
+
+    left:
+      r_set_man_exposure: false # Set this to true to use the manual exposure settings below.
+      r_exposure: 8000
+      r_iso: 400
+      r_set_auto_exp_region: true # Set this to true to use the auto exposure region settings below.
+      r_auto_exp_region_start_x: 160
+      r_auto_exp_region_start_y: 100
+      r_auto_exp_region_width: 320
+      r_auto_exp_region_height: 200
+
+    right:
+      r_set_man_exposure: false # Set this to true to use the manual exposure settings below.
+      r_exposure: 8000
+      r_iso: 400
+      r_set_auto_exp_region: true # Set this to true to use the auto exposure region settings below.
+      r_auto_exp_region_start_x: 160
+      r_auto_exp_region_start_y: 100
+      r_auto_exp_region_width: 320
+      r_auto_exp_region_height: 200
