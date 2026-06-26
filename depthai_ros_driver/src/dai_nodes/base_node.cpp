@@ -49,11 +49,11 @@ bool BaseNode::rsCompatibilityMode() {
 }
 
 std::string BaseNode::getFrameName(const std::string& frameName) {
-    return depthai_bridge::getFrameName(getROSNode()->get_name(), frameName);
+    return depthai_bridge::getFrameName(sensor_helpers::tfPrefix(getROSNode()), frameName);
 }
 
 std::string BaseNode::getOpticalFrameName(const std::string& frameName) {
-    return depthai_bridge::getOpticalFrameName(getROSNode()->get_name(), frameName, rsCompat);
+    return depthai_bridge::getOpticalFrameName(sensor_helpers::tfPrefix(getROSNode()), frameName, rsCompat);
 }
 dai::Node::Input& BaseNode::getInput(int /*linkType = 0*/) {
     throw(std::runtime_error("getInput() not implemented"));

@@ -43,6 +43,10 @@ std::string getNodeName(std::shared_ptr<rclcpp::Node> node, NodeNameEnum name) {
     return NodeNameMap.at(name);
 }
 
+std::string tfPrefix(std::shared_ptr<rclcpp::Node> node) {
+    return node->get_parameter("driver.i_tf_base_frame").as_string();
+}
+
 const std::unordered_map<std::string, dai::ImgResizeMode> resizeModeMap = {
     {"CROP", dai::ImgResizeMode::CROP},
     {"LETTERBOX", dai::ImgResizeMode::LETTERBOX},
