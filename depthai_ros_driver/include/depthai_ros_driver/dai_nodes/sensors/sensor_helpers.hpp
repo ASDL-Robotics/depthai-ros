@@ -47,6 +47,15 @@ extern const std::unordered_map<std::string, dai::CameraImageOrientation> camera
 extern const std::unordered_map<std::string, dai::ImgResizeMode> resizeModeMap;
 bool rsCompabilityMode(std::shared_ptr<rclcpp::Node> node);
 std::string getNodeName(std::shared_ptr<rclcpp::Node> node, NodeNameEnum name);
+/**
+ * @brief      Returns the prefix used to build image/optical/IMU frame_ids.
+ *
+ * The prefix is taken from `driver.i_tf_base_frame` so that published frame_ids always match the
+ * TF tree (whether broadcast from calibration or from an external URDF), enabling namespaced
+ * setups such as `robot1/oakd`. The parameter defaults to `oak`, which matches the default node
+ * name, so the default single-camera topology is unchanged.
+ */
+std::string tfPrefix(std::shared_ptr<rclcpp::Node> node);
 void basicCameraPub(const std::string& /*name*/,
                     const std::shared_ptr<dai::ADatatype>& data,
                     depthai_bridge::ImageConverter& converter,
